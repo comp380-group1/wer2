@@ -1,3 +1,4 @@
+package com.group1.wer;
 
 public class Payment implements Comparable<Payment> {
 

@@ -1,3 +1,4 @@
+package com.group1.wer;
 
 public class Participant implements Comparable<Participant> {
 
