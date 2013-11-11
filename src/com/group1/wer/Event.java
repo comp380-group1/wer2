@@ -9,6 +9,7 @@ public class Event {
 	private String name;
 	private List<Expense> expenses = new ArrayList<Expense>();
 	private List<Participant> participants = new ArrayList<Participant>();
+	private List<Payment> payments;
 	
 	public Event(String eventName) {
 		
@@ -33,7 +34,21 @@ public class Event {
 		
 	}
 	
+	public void addExpense(Expense newExpense) {
+		
+		expenses.add(newExpense);
+		
+	}
+	
+	public void reconcile() {
+		
+		payments = new ArrayList<Payment>();
+		Reconciler.reconcile(this.getAllParticipants(), payments);
+		
+	}
+	
 	public String getEventName() { return name; }
+	public List getAllPayments() { return payments;	}
 	public List getAllParticipants() { return participants; }
 	public List getAllExpenses() { return expenses; }
 	public Participant getParticipant(int i) { return participants.get(i); }
@@ -45,11 +60,5 @@ public class Event {
 			}
 		}
 		return null;
-	}
-	
-	public void addExpense(Expense newExpense) {
-		
-		expenses.add(newExpense);
-		
 	}
 }

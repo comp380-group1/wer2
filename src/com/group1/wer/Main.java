@@ -145,11 +145,13 @@ public class Main {
 	}
 	
 	private static void reconcile(int input) {
-		List<Payment> payments = new ArrayList<Payment>();
-		Reconciler.reconcile(events.get(input).getAllParticipants(), payments);
-		for(Payment payment : payments) {
-			System.out.println("To: " + payment.getTo() + " From: " + payment.getFrom() + " Amount: " + payment.getAmount());
-		}
+		//List<Payment> payments = new ArrayList<Payment>();
+		//Reconciler.reconcile(events.get(input).getAllParticipants(), payments);
+		//for(Payment payment : payments) {
+		//	System.out.println("To: " + payment.getTo() + " From: " + payment.getFrom() + " Amount: " + payment.getAmount());
+		//}
+		
+		events.get(input).reconcile();
 		
 		
 		
