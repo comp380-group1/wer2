@@ -1,6 +1,6 @@
-package com.group1.wer;
+package main;
 
-import com.group1.wer.Participant;
+import main.Participant;
 
 public class ExpenseParticipant {
 

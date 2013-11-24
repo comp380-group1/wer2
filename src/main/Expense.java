@@ -1,12 +1,13 @@
-package com.group1.wer;
+package main;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
 
-import com.group1.wer.Event;
-import com.group1.wer.Participant;
+import main.Event;
+import main.Participant;
+
 
 
 /* TODO: If the expense payment is changed, the cost is added to the participants total cost instead of recalculating the difference.

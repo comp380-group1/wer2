@@ -1,4 +1,4 @@
-package com.group1.wer;
+package main;
 
 import java.io.Serializable;
 import java.util.List;
@@ -7,6 +7,7 @@ import java.util.ArrayList;
 public class Event {
 	
 	private String name;
+	private long id;
 	private List<Expense> expenses = new ArrayList<Expense>();
 	private List<Participant> participants = new ArrayList<Participant>();
 	private List<Payment> payments;
@@ -51,6 +52,7 @@ public class Event {
 		
 	}
 	
+	public long getId() {	return id;	}
 	public boolean isReconciled() {	return isReconciled;	}
 	public String getEventName() { return name; }
 	public List getAllPayments() { return payments;	}
@@ -65,6 +67,13 @@ public class Event {
 			}
 		}
 		return null;
+	}
+	public String getParticipantsAsString() {
+		String people = "";
+		for(int i = 0; i < participants.size(); i++) {
+			people += participants.get(i).getName() + ", ";
+		}
+		return people;
 	}
 
 	
