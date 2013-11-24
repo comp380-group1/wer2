@@ -1,5 +1,7 @@
 package com.group1.wer;
 
+import com.group1.wer.Participant;
+
 public class ExpenseParticipant {
 
 	private Participant participant;

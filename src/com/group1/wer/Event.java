@@ -1,19 +1,22 @@
 package com.group1.wer;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
 
 public class Event {
-
 	
 	private String name;
 	private List<Expense> expenses = new ArrayList<Expense>();
 	private List<Participant> participants = new ArrayList<Participant>();
 	private List<Payment> payments;
 	
+	private boolean isReconciled;
+	
 	public Event(String eventName) {
 		
 		name = eventName;
+		isReconciled = false;
 		
 	}
 	
@@ -44,9 +47,11 @@ public class Event {
 		
 		payments = new ArrayList<Payment>();
 		Reconciler.reconcile(this.getAllParticipants(), payments);
+		isReconciled = true;
 		
 	}
 	
+	public boolean isReconciled() {	return isReconciled;	}
 	public String getEventName() { return name; }
 	public List getAllPayments() { return payments;	}
 	public List getAllParticipants() { return participants; }
@@ -61,4 +66,7 @@ public class Event {
 		}
 		return null;
 	}
+
+	
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }

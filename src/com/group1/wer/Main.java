@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class Main {
 
-	//negative = owed money
+	/*//negative = owed money
 	//positive = owe money
 	
 	private static Scanner scan;
@@ -190,5 +190,5 @@ public class Main {
 		expense.setAmountPaid(personIndex, amount);
 		expense.onClose();
 		
-	}
+	}*/
 }

@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
 
+import com.group1.wer.Event;
+import com.group1.wer.Participant;
+
 
 /* TODO: If the expense payment is changed, the cost is added to the participants total cost instead of recalculating the difference.
  * i.e. if the original bill was for $10 and it is changed to $6, the $6 is added to all the participants running balance instead
