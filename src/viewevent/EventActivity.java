@@ -1,11 +1,20 @@
 package viewevent;
 
 import wer.main.R;
-import wer.main.R.layout;
-import wer.main.R.menu;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
+
+/**
+ * Todo:
+ * -Basically everything...
+ * 
+ * @author Matt Hamersky
+ * @info Displays information about a particular event including name, participants, and expenses.
+ * The user is allowed to tap a participant/expense and another activity is launched displaying more
+ * information about it.
+ * Uses layouts: viewevent_main
+ */
 
 public class EventActivity extends Activity {
 

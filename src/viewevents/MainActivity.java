@@ -21,6 +21,19 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 
+/**
+ * Todo: 
+ * -Add functionality for editing an event (whether that is HOLD-CLICK the row or ON-CLICK for
+ * 		an edit button).
+ * -Add functionality for connecting with the database.
+ * -Add functionality for creating a new event (requires launching the add/edit activity).
+ * 
+ * @author Matt Hamersky
+ * @info Activity launched when the application starts.  Displays all the events that the user has
+ * created.  Ability to add/edit/view an event while on this activity.
+ * Uses layouts: viewevents_main
+ */
+
 public class MainActivity extends Activity {
 
 	
@@ -34,7 +47,7 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main_activity);
+		setContentView(R.layout.viewevents_main);
 		
 		newEventButton = (Button)findViewById(R.id.newevent);
 		newEventButton.setBackgroundColor(Color.GREEN);
@@ -45,7 +58,7 @@ public class MainActivity extends Activity {
 		listview = (ListView)findViewById(R.id.lstText);
 		listview.setItemsCanFocus(true);
 		
-		adapter = new EventAdapter(this, R.layout.listitems, events);
+		adapter = new EventAdapter(this, R.layout.viewevents_list_view_components, events);
 		listview.setAdapter(adapter);
 		
 		

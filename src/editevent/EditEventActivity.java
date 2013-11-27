@@ -19,6 +19,20 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+/**
+ * Todo:
+ * -Make sure fetching contacts does what it is supposed to do
+ * -Add functionality to allow the user to create a new participant
+ * -Add functionality that when a user taps a contact, it changes to green to signify it is selected
+ * -Add onClose method to retrieve selected contacts and add them to that event
+ * 
+ * @author Matt Hamersky
+ * @info Utility activity that gets launched when a user wants to either create or edit and event.  Creating an event
+ * starts the fields as blank while editing an event starts the fields with data.
+ * Uses layouts: editevent_activity
+ *
+ */
+
 public class EditEventActivity extends Activity {
 
 	TextView eventName;

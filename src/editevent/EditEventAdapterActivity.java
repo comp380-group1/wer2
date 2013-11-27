@@ -17,6 +17,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+/**
+ * Todo: COMPLETED
+ * 
+ * @author Matt Hamersky
+ * @info Adapter class for EditEventActivity.class, handles displaying the event name and list of contacts for
+ * an event.
+ * Uses layouts: editevent_list_view_components
+ *
+ */
+
 public class EditEventAdapterActivity extends ArrayAdapter<EditEventContact> {
 
 	private int resource;

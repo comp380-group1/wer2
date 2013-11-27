@@ -15,9 +15,21 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+/**
+ * Todo:  
+ * -Remove gray/green circle and go back to gray/green background for each row.  
+ * -Add edit button in place of circle OR have the user HOLD-CLICK the row to go into editing mode.  
+ * -Possibly extend text fields for participants/event name AND/OR change the data that is displayed in those fields.
+ * 
+ * @author Matt Hamersky
+ * @info Adapter for MainActivity.class.  Handles displaying the relavent data of each event in the listview.
+ * Uses layouts: viewevents_list_view_components
+ */
 
 public class EventAdapter extends ArrayAdapter<Event> {
 
@@ -51,10 +63,12 @@ public class EventAdapter extends ArrayAdapter<Event> {
 		TextView eventName = (TextView)alertView.findViewById(R.id.eventname);
 		TextView participants = (TextView)alertView.findViewById(R.id.participants);
 		ImageView image = (ImageView)alertView.findViewById(R.id.image);
+		ImageButton imageButton = (ImageButton)alertView.findViewById(R.id.editbutton);
 		
 		if(event.isReconciled()) {
 			//alertView.setBackgroundColor(Color.GRAY);
 			image.setImageResource(R.drawable.gray_button_updated);
+			imageButton.setImageResource(R.drawable.edit_pencil);
 		}
 		else {
 			//alertView.setBackgroundColor(Color.GREEN);

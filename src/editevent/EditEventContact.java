@@ -1,5 +1,14 @@
 package editevent;
 
+/**
+ * Todo: COMPLETED
+ * 
+ * @author Matt Hamersky
+ * @info Helper class for EditEventAdapterActivity.class.  Provides an easy way of passing data to the
+ * adapter to display the phones contacts.
+ *
+ */
+
 public class EditEventContact {
 
 	private String name;
