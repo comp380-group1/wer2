@@ -58,8 +58,8 @@ public class MainActivity extends Activity {
 		listview = (ListView)findViewById(R.id.lstText);
 		listview.setItemsCanFocus(true);
 		
-		adapter = new EventAdapter(this, R.layout.viewevents_list_view_components, events);
-		listview.setAdapter(adapter);
+		//adapter = new EventAdapter(this, R.layout.viewevents_list_view_components, events);
+		//listview.setAdapter(adapter);
 		
 		
 		/* This is for viewing the event, NOT editing the event

@@ -1,6 +1,5 @@
 package main;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -10,15 +9,12 @@ public class Event {
 	private long id;
 	private List<Expense> expenses = new ArrayList<Expense>();
 	private List<Participant> participants = new ArrayList<Participant>();
-	private List<Payment> payments;
-	
+	private List<Payment> payments;	
 	private boolean isReconciled;
 	
 	public Event(String eventName) {
-		
 		name = eventName;
 		isReconciled = false;
-		
 	}
 	
 	public void addParticipant(Participant newParticipant) { 

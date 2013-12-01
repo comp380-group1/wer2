@@ -14,7 +14,7 @@ import android.util.Log;
 
 public class DataManager extends SQLiteOpenHelper {
 	private final static String DATABASE_NAME = "dbfile";
-	private final static int DATABASE_VERSION = 9;
+	private final static int DATABASE_VERSION = 1;
 	private final static String TAG = "com.group1.wer.DataManager";
 	
 	private final static String TABLE_PARTICIPANTS = "Participants";
@@ -41,9 +41,10 @@ public class DataManager extends SQLiteOpenHelper {
 		
 		if (cursor.moveToFirst()) {
 			participant = new Participant(cursor.getLong(0),
-										  cursor.getString(1),
+										  cursor.getLong(1),
 										  cursor.getString(2),
-										  cursor.getDouble(3));
+										  cursor.getString(3),
+										  cursor.getDouble(4));
 			Log.i(TAG, "Selecting " + participant.toString());			
 		}
 		
@@ -58,9 +59,10 @@ public class DataManager extends SQLiteOpenHelper {
 		
 		while (cursor.moveToNext()) {
 			Participant participant = new Participant(cursor.getLong(0),
-										  cursor.getString(1),
+										  cursor.getLong(1),
 										  cursor.getString(2),
-										  cursor.getDouble(3));
+										  cursor.getString(3),
+										  cursor.getDouble(4));
 			
 			entities.add(participant);
 		}		
@@ -92,6 +94,7 @@ public class DataManager extends SQLiteOpenHelper {
 				
 		ContentValues updateValues = new ContentValues();
 		updateValues.put("name", participant.getName());
+		updateValues.put("eventId", participant.getEventId());
 		updateValues.put("phoneNumber", participant.getPhoneNumber());
 		updateValues.put("currentBalance", participant.getCurrentBalance());
 		
@@ -105,6 +108,7 @@ public class DataManager extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues insertValues = new ContentValues();
 		
+		insertValues.put("eventId", participant.getEventId());
 		insertValues.put("name", participant.getName());
 		insertValues.put("phoneNumber", participant.getPhoneNumber());
 		insertValues.put("currentBalance", participant.getCurrentBalance());
@@ -136,10 +140,21 @@ public class DataManager extends SQLiteOpenHelper {
 	
 	@Override
 	public void onCreate(SQLiteDatabase db) {		
-		String sql;
+		String sql;	
+		
+		// Build Event Participants Table
+		sql = "CREATE TABLE " + TABLE_EVENTS + " " +
+			  "(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, isReconciled INTEGER)";
+		db.execSQL(sql);
+		
+		// Build Expense Participants Table
+		//sql = "CREATE TABLE " + TABLE_EXPENSE_PARTICIPANTS + " " +
+		//		  "(id INTEGER PRIMARY KEY AUTOINCREMENT, pdarticipantId INTEGER, phoneNumber TEXT, currentBalance REAL)";
+		//db.execSQL(sql);
 		
 		// Build Participants table
-		sql = "CREATE TABLE " + TABLE_PARTICIPANTS + " (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, phoneNumber TEXT, currentBalance REAL)";
+		sql = "CREATE TABLE " + TABLE_PARTICIPANTS + " " +
+			  "(id INTEGER PRIMARY KEY AUTOINCREMENT, eventId INTEGER, name TEXT, phoneNumber TEXT, currentBalance REAL)";
 		db.execSQL(sql);
 	}
 

@@ -18,6 +18,8 @@ import main.Participant;
 public class Expense {
 
 	private List<ExpenseParticipant> participants = new ArrayList<ExpenseParticipant>();
+	private long eventId;
+	private Event event;
 	private String name;
 	private double amount;
 	

@@ -40,6 +40,10 @@
             android:name="editexpense.EditExpenseActivity"
             android:label="@string/title_activity_edit_expense" >
         </activity>
+        <activity
+            android:name="wer.main.TestDataManager"
+            android:label="@string/title_activity_test_data_manager" >
+        </activity>
     </application>
 
 </manifest>
