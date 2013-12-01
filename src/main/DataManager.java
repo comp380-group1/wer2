@@ -146,8 +146,11 @@ public class DataManager extends SQLiteOpenHelper {
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		Log.i(TAG, "Upgrading db to version " + newVersion);
-		String sql = "DROP TABLE IF EXISTS " + TABLE_PARTICIPANTS;
-		db.execSQL(sql);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_EVENTS);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_EXPENSE_PARTICIPANTS);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_EXPENSES);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_PARTICIPANTS);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_PAYMENTS);
 		onCreate(db);
 	}
 
