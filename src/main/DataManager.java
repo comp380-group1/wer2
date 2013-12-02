@@ -127,8 +127,7 @@ public class DataManager extends SQLiteOpenHelper {
 		}
 		
 		return participant;
-	}
-	
+	}	
 	
 	public List<Participant> getAllParticipants() throws Exception {
 		List<Participant> entities = new ArrayList<Participant>();
@@ -146,8 +145,7 @@ public class DataManager extends SQLiteOpenHelper {
 			entities.add(participant);
 		}		
 		return entities;
-	}
-	
+	}	
 
 	public long saveParticipant(Participant participant) {
 		long id = -1;
@@ -160,16 +158,13 @@ public class DataManager extends SQLiteOpenHelper {
 		}
 		
 		return id;
-	}
-	
+	}	
 
 	public void saveParticipants(List<Participant> participants) {
 		for (int i = 0; i < participants.size(); i++) {
 			saveParticipant(participants.get(i));
 		}
 	}
-	
-
 
 	public int updateParticipant(Participant participant) {
 		int rowsAffected = 0;
@@ -203,8 +198,6 @@ public class DataManager extends SQLiteOpenHelper {
 		Log.i(TAG, "Inserted " + participant.toString());
 		return id;
 	}
-	
-
 
 	public int deleteParticipant(Participant participant) {
 		int rowsAffected = 0;
