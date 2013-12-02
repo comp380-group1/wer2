@@ -8,12 +8,15 @@ import java.util.ArrayList;
 import viewevent.EventActivity;
 import wer.main.R;
 
+import main.DataManager;
 import main.Event;
+import main.Payment;
 
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -86,7 +89,22 @@ public class MainActivity extends Activity {
 	}
 	
 	public void createNewEvent(View view) {
+		DataManager dm = new DataManager(this.getApplicationContext());
+		Event e = new Event("Event One", false);
+		dm.saveEvent(e);
 		
+		Payment p = new Payment(2, "Matt", "Denis", 5.00);
+		dm.savePayment(p);
+		
+		p = dm.getPayment(p.getId());
+		Log.i("DataManager",p.toString());
+		
+		try {
+			List<Payment> payments = dm.getPaymentsByEventId(1);
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	}
 	
 	
