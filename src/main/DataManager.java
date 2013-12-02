@@ -8,8 +8,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.*;
-import android.database.sqlite.SQLiteDatabase.CursorFactory;
-import android.provider.SyncStateContract.Columns;
 import android.util.Log;
 
 public class DataManager extends SQLiteOpenHelper {

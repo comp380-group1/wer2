@@ -34,6 +34,7 @@ public class Payment implements Comparable<Payment> {
 		
 	}
 	
+	@Override
 	public int compareTo(Payment payment)
 	{
 		return this.from.compareTo(payment.getFrom());

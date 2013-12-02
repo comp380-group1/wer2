@@ -1,8 +1,6 @@
 package editexpense;
 
 import wer.main.R;
-import wer.main.R.layout;
-import wer.main.R.menu;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;

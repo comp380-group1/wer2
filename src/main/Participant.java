@@ -50,6 +50,7 @@ public class Participant implements Comparable<Participant> {
 		currentBalance += newBalance;
 	}
 	
+	@Override
 	public int compareTo(Participant participant) {
 		if (this.currentBalance < participant.getCurrentBalance()) return -1;
 		if (this.currentBalance > participant.getCurrentBalance()) return 1;
@@ -63,6 +64,7 @@ public class Participant implements Comparable<Participant> {
 	public double getCurrentBalance() { return currentBalance; }
 
 	
+	@Override
 	public String toString() {
 		return "Participant (id=" + getId() + ",eventId=" + getEventId() + ",name=" + getName() + ",phoneNumber=" + getPhoneNumber() + ",currentBalance=" + getCurrentBalance() + ")";
 	}	

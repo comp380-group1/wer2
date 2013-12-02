@@ -65,7 +65,8 @@ public class MainActivity extends Activity {
 		/* This is for viewing the event, NOT editing the event
 		 */
 		listview.setOnItemClickListener(new OnItemClickListener() {
-		    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		    @Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		    	Event event = events.get(position);
 		    	
 		    	Intent intent = new Intent(MainActivity.this, EventActivity.class);

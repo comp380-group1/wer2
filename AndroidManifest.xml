@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="11"
+        android:minSdkVersion="10"
         android:targetSdkVersion="18" />
 
     <uses-permission android:name="android.permission.READ_CONTACTS" />
@@ -16,17 +16,13 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="main.ViewEvents"
+            android:name="viewevents.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name="main.ViewEvent"
-            android:label="@string/title_activity_view_event" >
         </activity>
         <activity
             android:name="viewevent.EventActivity"
@@ -39,10 +35,6 @@
         <activity
             android:name="editexpense.EditExpenseActivity"
             android:label="@string/title_activity_edit_expense" >
-        </activity>
-        <activity
-            android:name="wer.main.TestDataManager"
-            android:label="@string/title_activity_test_data_manager" >
         </activity>
     </application>
 
