@@ -12,7 +12,7 @@ import android.util.Log;
 
 public class DataManager extends SQLiteOpenHelper {
 	private final static String DATABASE_NAME = "dbfile";
-	private final static int DATABASE_VERSION = 1;
+	private final static int DATABASE_VERSION = 15;
 	private final static String TAG = "com.group1.wer.DataManager";
 	
 	private final static String TABLE_PARTICIPANTS = "Participants";
@@ -106,6 +106,32 @@ public class DataManager extends SQLiteOpenHelper {
 		Log.i(TAG,"Deleted Event (Id = " + eventId);
 		return rowsAffected;
 	}
+	
+	public ExpenseParticipant getExpenseParticipant(long id) {
+		ExpenseParticipant expenseParticipant = null;
+		SQLiteDatabase db = this.getReadableDatabase();
+		
+		Cursor cursor = db.query(TABLE_EXPENSE_PARTICIPANTS,
+				 new String[] {"id", "eventId", "participantId", "paid", "allottedAmount", "participating"}, 
+				 "id=?",
+				 new String[] {Long.toString(id)},
+				 null, null, null);
+		
+		if (cursor.moveToFirst()) {
+			expenseParticipant = new ExpenseParticipant(cursor.getLong(0),
+													    cursor.getLong(1),
+													    cursor.getLong(2),
+													    cursor.getDouble(3),
+													    cursor.getDouble(4),
+													    (cursor.getInt(5) == 0 ? false : true));
+			Log.i(TAG, "Selecting " + expenseParticipant.toString());			
+		}
+		
+		return expenseParticipant;
+	}	
+	
+	
+	
 	
 	public Participant getParticipant(long id) {
 		Participant participant = null;
@@ -215,7 +241,98 @@ public class DataManager extends SQLiteOpenHelper {
 		Log.i(TAG,"Deleted Participant (Id = " + participantId);
 		return rowsAffected;
 	}
+	
+	public Payment getPayment(long id) {
+		Payment payment = null;
+		SQLiteDatabase db = this.getReadableDatabase();
 		
+		Cursor cursor = db.query(TABLE_PAYMENTS,
+				 new String[] {"id", "eventId", "toName", "fromName", "amount"}, 
+				 "id=?",
+				 new String[] {Long.toString(id)},
+				 null, null, null);
+		
+		if (cursor.moveToFirst()) {
+			payment = new Payment(cursor.getLong(0),
+								  cursor.getLong(1),
+								  cursor.getString(2),
+								  cursor.getString(3),
+								  cursor.getDouble(4));
+			Log.i(TAG, "Selecting " + payment.toString());			
+		}
+		
+		return payment;	
+	}
+	
+	public List<Payment> getPaymentsByEventId(long eventId) throws Exception {
+		List<Payment> entities = new ArrayList<Payment>();
+		SQLiteDatabase db = this.getReadableDatabase();
+		
+		Cursor cursor = db.query(TABLE_PAYMENTS,
+				 new String[] {"id", "eventId", "toName", "fromName", "amount"}, 
+				 "eventId=?",
+				 new String[] {Long.toString(eventId)},
+				 null, null, null);
+		
+		while (cursor.moveToNext()) {
+			Payment payment = new Payment(cursor.getLong(0),
+					  cursor.getLong(1),
+					  cursor.getString(2),
+					  cursor.getString(3),
+					  cursor.getDouble(4));
+			Log.i(TAG, "Selecting " + payment.toString());
+			
+			entities.add(payment);
+		}		
+		return entities;
+	}	
+
+	public long savePayment(Payment payment) {
+		long id = -1;
+		
+		if (payment.getId() > -1) {
+			updatePayment(payment);
+			id = payment.getId();
+		} else {
+			id = insertPayment(payment);
+		}
+		
+		return id;
+	}
+	
+	public int updatePayment(Payment payment) {
+		int rowsAffected = 0;
+		SQLiteDatabase db = this.getWritableDatabase();
+				
+		ContentValues updateValues = new ContentValues();
+		updateValues.put("eventId", payment.getEventId());
+		updateValues.put("toName", payment.getTo());
+		updateValues.put("fromName", payment.getFrom());
+		updateValues.put("amount", payment.getAmount());
+		
+		rowsAffected = db.update(TABLE_PAYMENTS, updateValues, "id=?", new String[] {Long.toString(payment.getId())});
+		
+		Log.i(TAG, "Updated " + payment.toString());
+		return rowsAffected;	
+	}
+	
+	public long insertPayment(Payment payment) {
+		long id = -1;
+		SQLiteDatabase db = this.getWritableDatabase();
+		ContentValues insertValues = new ContentValues();
+		
+		insertValues.put("eventId", payment.getEventId());
+		insertValues.put("toName", payment.getTo());
+		insertValues.put("fromName", payment.getFrom());
+		insertValues.put("amount", payment.getAmount());
+		
+		id = db.insert(TABLE_PAYMENTS, null, insertValues);		
+		payment.setId(id);
+		
+		Log.i(TAG, "Inserted " + payment.toString());
+		return id;
+	}
+	
 	@Override
 	public void onCreate(SQLiteDatabase db) {		
 		String sql;	
@@ -226,13 +343,18 @@ public class DataManager extends SQLiteOpenHelper {
 		db.execSQL(sql);
 		
 		// Build Expense Participants Table
-		//sql = "CREATE TABLE " + TABLE_EXPENSE_PARTICIPANTS + " " +
-		//		  "(id INTEGER PRIMARY KEY AUTOINCREMENT, pdarticipantId INTEGER, phoneNumber TEXT, currentBalance REAL)";
-		//db.execSQL(sql);
+		sql = "CREATE TABLE " + TABLE_EXPENSE_PARTICIPANTS + " " +
+				  "(id INTEGER PRIMARY KEY AUTOINCREMENT, eventId INTEGER, participantId INTEGER, paid REAL, allottedAmount REAL, participating INTEGER)";
+		db.execSQL(sql);
 		
 		// Build Participants table
 		sql = "CREATE TABLE " + TABLE_PARTICIPANTS + " " +
 			  "(id INTEGER PRIMARY KEY AUTOINCREMENT, eventId INTEGER, name TEXT, phoneNumber TEXT, currentBalance REAL)";
+		db.execSQL(sql);
+		
+		// Build Payments table
+		sql = "CREATE TABLE " + TABLE_PAYMENTS + " " +
+			  "(id INTEGER PRIMARY KEY AUTOINCREMENT, eventId INTEGER, toName TEXT, fromName TEXT, amount REAL)";
 		db.execSQL(sql);
 	}
 
@@ -245,7 +367,5 @@ public class DataManager extends SQLiteOpenHelper {
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_PARTICIPANTS);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_PAYMENTS);
 		onCreate(db);
-	}
-
-	
+	}	
 }

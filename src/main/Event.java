@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class Event {
 	
-	private long id;
+	private long id = -1;
 	private String name;
 	private boolean isReconciled;
 	private List<Expense> expenses = new ArrayList<Expense>();
