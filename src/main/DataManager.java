@@ -27,6 +27,86 @@ public class DataManager extends SQLiteOpenHelper {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
 	
+	public Event getEvent(long id) {
+		Event event = null;
+		SQLiteDatabase db = this.getReadableDatabase();
+		
+		Cursor cursor = db.query(TABLE_EVENTS,
+				 new String[] {"id", "name", "isReconciled"}, 
+				 "id=?",
+				 new String[] {Long.toString(id)},
+				 null, null, null);
+		
+		if (cursor.moveToFirst()) {
+			event = new Event(cursor.getLong(0),
+							  cursor.getString(1),
+							  (cursor.getLong(2) == 0 ? false : true));
+			Log.i(TAG, "Selecting " + event.toString());			
+		}
+		
+		return event;
+	}
+	
+	public long saveEvent(Event	event) {
+		long id = -1;
+		
+		if (event.getId() > -1) {
+			updateEvent(event);
+			id = event.getId();
+		} else {
+			id = insertEvent(event);
+		}
+		
+		return id;
+	}
+	
+	public long insertEvent(Event event) {
+		long id = -1;
+		SQLiteDatabase db = this.getWritableDatabase();
+		ContentValues insertValues = new ContentValues();
+		
+		insertValues.put("name", event.getName());
+		insertValues.put("isReconciled", (event.getIsReconciled() ? 1 : 0));
+
+		
+		id = db.insert(TABLE_EVENTS, null, insertValues);		
+		event.setId(id);
+		
+		Log.i(TAG, "Inserted " + event.toString());
+		return id;
+	}
+	
+	public int updateEvent(Event event) {
+		int rowsAffected = 0;
+		SQLiteDatabase db = this.getWritableDatabase();
+				
+		ContentValues updateValues = new ContentValues();
+		updateValues.put("name", event.getName());
+		updateValues.put("isReconciled", (event.getIsReconciled() ? 1 : 0));
+		
+		rowsAffected = db.update(TABLE_EVENTS, updateValues, "id=?", new String[] {Long.toString(event.getId())});
+		
+		Log.i(TAG, "Updated " + event.toString());
+		return rowsAffected;		
+	}
+
+	public int deleteEvent(Event event) {
+		int rowsAffected = 0;
+		if (event.getId() != -1) {
+			rowsAffected = deleteEvent(event.getId());
+		}
+		
+		return rowsAffected;
+	}	
+	
+	public int deleteEvent(long eventId) {
+		int rowsAffected = 0;
+		SQLiteDatabase db = this.getWritableDatabase();
+		rowsAffected = db.delete(TABLE_EVENTS, "id=" + eventId,null);
+		Log.i(TAG,"Deleted Event (Id = " + eventId);
+		return rowsAffected;
+	}
+	
 	public Participant getParticipant(long id) {
 		Participant participant = null;
 		SQLiteDatabase db = this.getReadableDatabase();
@@ -49,6 +129,7 @@ public class DataManager extends SQLiteOpenHelper {
 		return participant;
 	}
 	
+	
 	public List<Participant> getAllParticipants() throws Exception {
 		List<Participant> entities = new ArrayList<Participant>();
 		SQLiteDatabase db = this.getReadableDatabase();
@@ -67,6 +148,7 @@ public class DataManager extends SQLiteOpenHelper {
 		return entities;
 	}
 	
+
 	public long saveParticipant(Participant participant) {
 		long id = -1;
 		
@@ -80,12 +162,15 @@ public class DataManager extends SQLiteOpenHelper {
 		return id;
 	}
 	
+
 	public void saveParticipants(List<Participant> participants) {
 		for (int i = 0; i < participants.size(); i++) {
 			saveParticipant(participants.get(i));
 		}
 	}
 	
+
+
 	public int updateParticipant(Participant participant) {
 		int rowsAffected = 0;
 		SQLiteDatabase db = this.getWritableDatabase();
@@ -98,9 +183,10 @@ public class DataManager extends SQLiteOpenHelper {
 		
 		rowsAffected = db.update(TABLE_PARTICIPANTS, updateValues, "id=?", new String[] {Long.toString(participant.getId())});
 		
+		Log.i(TAG, "Updated " + participant.toString());
 		return rowsAffected;		
 	}
-	
+
 	public long insertParticipant(Participant participant) {
 		long id = -1;
 		SQLiteDatabase db = this.getWritableDatabase();
@@ -118,6 +204,8 @@ public class DataManager extends SQLiteOpenHelper {
 		return id;
 	}
 	
+
+
 	public int deleteParticipant(Participant participant) {
 		int rowsAffected = 0;
 		if (participant.getId() != -1) {
@@ -134,8 +222,7 @@ public class DataManager extends SQLiteOpenHelper {
 		Log.i(TAG,"Deleted Participant (Id = " + participantId);
 		return rowsAffected;
 	}
-	
-	
+		
 	@Override
 	public void onCreate(SQLiteDatabase db) {		
 		String sql;	
