@@ -23,8 +23,6 @@ public class DataManager extends SQLiteOpenHelper {
 	
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd",Locale.US);
 	
-	
-	//this is a test to see what happens
 	public DataManager(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
