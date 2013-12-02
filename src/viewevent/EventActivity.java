@@ -22,6 +22,9 @@ public class EventActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.viewevent_main);
+		
+		System.out.println("here");
+		//this is a test to see what happens
 	}
 
 	@Override

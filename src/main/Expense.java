@@ -16,6 +16,7 @@ import main.Participant;
  */
 public class Expense {
 
+	private String hello = "";
 	private List<ExpenseParticipant> participants = new ArrayList<ExpenseParticipant>();
 	private long eventId;
 	private Event event;
