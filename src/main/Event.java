@@ -1,5 +1,6 @@
 package main;
 
+import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -7,24 +8,32 @@ public class Event {
 	
 	private long id = -1;
 	private String name;
+	private Date date = null;
 	private boolean isReconciled;
 	private List<Expense> expenses = new ArrayList<Expense>();
 	private List<Participant> participants = new ArrayList<Participant>();
 	private List<Payment> payments;	
 
-	public Event(long id, String eventName, boolean isReconciled) {
+	public Event(long id, String name, Date date, boolean isReconciled) {
 		this.id = id;
-		this.name = eventName;
+		this.name = name;
+		this.date = date;
 		this.isReconciled = isReconciled;
 	}
 	
-	public Event(String eventName, boolean isReconciled) {
-		this.name = eventName;
+	public Event(String name, Date date, boolean isReconciled) {
+		this.name = name;
+		this.date = date;
 		this.isReconciled = isReconciled;
 	}
 	
-	public Event(String eventName) {
-		name = eventName;
+	public Event(String name, boolean isReconciled) {
+		this.name = name;
+		this.isReconciled = isReconciled;
+	}
+	
+	public Event(String name) {
+		this.name = name;
 		isReconciled = false;
 	}
 	
@@ -64,12 +73,17 @@ public class Event {
 		this.name = name;
 	}
 	
+	public void setDate(Date date) {
+		this.date = date;
+	}
+	
 	public void setIsReconciled(boolean isReconciled) {
 		this.isReconciled = isReconciled;
 	}
 	
 	public long getId() {	return id;	}
 	public String getName() { return name; }
+	public Date getDate() { return date; }
 	public boolean getIsReconciled() {	return isReconciled;	}
 	public boolean isReconciled() {	return isReconciled;	}
 	public String getEventName() { return name; }
@@ -95,7 +109,7 @@ public class Event {
 	}
 
 	public String toString() {
-		return "Event (id=" + getId() + ",name=" + getName() + ",isReconciled=" + getIsReconciled() + ")";
+		return "Event (id=" + getId() + ",name=" + getName() + ",date=" + getDate() + ",isReconciled=" + getIsReconciled() + ")";
 	}	
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }

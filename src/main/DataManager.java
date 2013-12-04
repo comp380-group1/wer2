@@ -1,6 +1,8 @@
 package main;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -12,7 +14,7 @@ import android.util.Log;
 
 public class DataManager extends SQLiteOpenHelper {
 	private final static String DATABASE_NAME = "dbfile";
-	private final static int DATABASE_VERSION = 15;
+	private final static int DATABASE_VERSION = 16;
 	private final static String TAG = "com.group1.wer.DataManager";
 	
 	private final static String TABLE_PARTICIPANTS = "Participants";
@@ -27,6 +29,21 @@ public class DataManager extends SQLiteOpenHelper {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
 	
+	private Date stringToDate(String dbDate) {
+		Date date = null;
+		try {
+			date = dateFormat.parse(dbDate);
+		} catch (ParseException e) {
+			date = null;
+		}
+		return date;
+	}
+	
+	private String dateToString(Date date) { 
+		String stringDate = dateFormat.format(date);
+		return stringDate;
+	}
+	
 	public Event getEvent(long id) {
 		Event event = null;
 		SQLiteDatabase db = this.getReadableDatabase();
@@ -39,12 +56,37 @@ public class DataManager extends SQLiteOpenHelper {
 		
 		if (cursor.moveToFirst()) {
 			event = new Event(cursor.getLong(0),
-							  cursor.getString(1),
-							  (cursor.getLong(2) == 0 ? false : true));
+	  				cursor.getString(1),
+	  				stringToDate(cursor.getString(2)),
+	  				(cursor.getLong(3) == 0 ? false : true));
 			Log.i(TAG, "Selecting " + event.toString());			
 		}
 		
 		return event;
+	}
+	
+	/**
+	 * Needs to be finished!!
+	 * @return
+	 * @throws Exception
+	 */
+	public List<Event> getAllEvents() throws Exception {
+		List<Event> entities = new ArrayList<Event>();
+		SQLiteDatabase db = this.getReadableDatabase();
+		
+		Cursor cursor = db.query(TABLE_EVENTS, null, null, null, null, null, null);
+		
+		while (cursor.moveToNext()) {
+			Event event = new Event(cursor.getLong(0),
+	  				cursor.getString(1),
+	  				stringToDate(cursor.getString(2)),
+	  				(cursor.getLong(3) == 0 ? false : true));
+			
+			Log.i(TAG, "Selecting " + event.toString());	
+			
+			entities.add(event);
+		}		
+		return entities;
 	}
 	
 	public long saveEvent(Event	event) {
@@ -66,8 +108,8 @@ public class DataManager extends SQLiteOpenHelper {
 		ContentValues insertValues = new ContentValues();
 		
 		insertValues.put("name", event.getName());
+		insertValues.put("date", dateToString(event.getDate()));
 		insertValues.put("isReconciled", (event.getIsReconciled() ? 1 : 0));
-
 		
 		id = db.insert(TABLE_EVENTS, null, insertValues);		
 		event.setId(id);
@@ -82,6 +124,7 @@ public class DataManager extends SQLiteOpenHelper {
 				
 		ContentValues updateValues = new ContentValues();
 		updateValues.put("name", event.getName());
+		updateValues.put("date", dateToString(event.getDate()));
 		updateValues.put("isReconciled", (event.getIsReconciled() ? 1 : 0));
 		
 		rowsAffected = db.update(TABLE_EVENTS, updateValues, "id=?", new String[] {Long.toString(event.getId())});
@@ -107,29 +150,6 @@ public class DataManager extends SQLiteOpenHelper {
 		return rowsAffected;
 	}
 	
-	/**
-	 * Needs to be finished!!
-	 * @return
-	 * @throws Exception
-	 */
-	public List<Event> getAllEvents() throws Exception {
-		List<Event> entities = new ArrayList<Event>();
-		SQLiteDatabase db = this.getReadableDatabase();
-		
-		Cursor cursor = db.query(TABLE_EVENTS, null, null, null, null, null, null);
-		
-		while (cursor.moveToNext()) {
-			Event event = new Event(cursor.getLong(0),
-					  cursor.getString(1),
-					  (cursor.getLong(2) == 0 ? false : true));
-			
-			Log.i(TAG, "Selecting " + event.toString());	
-			
-			entities.add(event);
-		}		
-		return entities;
-	}	
-	
 	public ExpenseParticipant getExpenseParticipant(long id) {
 		ExpenseParticipant expenseParticipant = null;
 		SQLiteDatabase db = this.getReadableDatabase();
@@ -152,10 +172,7 @@ public class DataManager extends SQLiteOpenHelper {
 		
 		return expenseParticipant;
 	}	
-	
-	
-	
-	
+		
 	public Participant getParticipant(long id) {
 		Participant participant = null;
 		SQLiteDatabase db = this.getReadableDatabase();
@@ -362,7 +379,7 @@ public class DataManager extends SQLiteOpenHelper {
 		
 		// Build Event Participants Table
 		sql = "CREATE TABLE " + TABLE_EVENTS + " " +
-			  "(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, isReconciled INTEGER)";
+			  "(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, date TEXT, isReconciled INTEGER)";
 		db.execSQL(sql);
 		
 		// Build Expense Participants Table
