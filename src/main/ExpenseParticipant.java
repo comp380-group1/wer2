@@ -11,8 +11,7 @@ public class ExpenseParticipant {
 	private double allottedAmount; //used to keep track of how much this participant is paying/needs to be paid (after the per expense split)
 	private boolean participating;
 	
-	private Participant participant;
-	
+	private Participant participant;	
 	
 	public ExpenseParticipant(long id, long eventId, long participantId, double paid, double allottedAmount, boolean participating) {
 		this.id = id;
@@ -31,8 +30,7 @@ public class ExpenseParticipant {
 		this.participating = participating;
 	}
 	
-	public ExpenseParticipant(Participant participant, double paid, boolean participating) {
-		
+	public ExpenseParticipant(Participant participant, double paid, boolean participating) {		
 		this.participant = participant;
 		this.paid = paid;
 		this.allottedAmount = 0.0;
@@ -62,10 +60,10 @@ public class ExpenseParticipant {
 	public long getEventId() { return eventId; }
 	public long getParticipantId() { return participantId; }
 	public Participant getParticipant() { return participant;	}
-	public double getAmount() {	return paid;	}
-	public double getPaid() {	return paid;	}
+	public double getAmount() {	return paid; }
+	public double getPaid() { return paid; }
 	public double getAllottedAmount() {	return allottedAmount;	}
-	public boolean isParticipating() {	return participating;	}
+	public boolean isParticipating() { return participating; }
 	public boolean getParticipating() {	return participating;	}
 	
 	public String toString() {

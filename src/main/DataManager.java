@@ -172,6 +172,72 @@ public class DataManager extends SQLiteOpenHelper {
 		
 		return expenseParticipant;
 	}	
+	
+	public long saveExpenseParticipant(ExpenseParticipant expenseParticipant) {
+		long id = -1;
+		
+		if (expenseParticipant.getId() > -1) {
+			updateExpenseParticipant(expenseParticipant);
+			id = expenseParticipant.getId();
+		} else {
+			id = insertExpenseParticipant(expenseParticipant);
+		}
+		
+		return id;
+	}
+	
+	public long insertExpenseParticipant(ExpenseParticipant expenseParticipant) {
+		long id = -1;
+		SQLiteDatabase db = this.getWritableDatabase();
+		ContentValues insertValues = new ContentValues();
+		
+		insertValues.put("eventId", expenseParticipant.getEventId());
+		insertValues.put("participantId", expenseParticipant.getParticipantId());
+		insertValues.put("paid", expenseParticipant.getPaid());
+		insertValues.put("allottedAmount", expenseParticipant.getAllottedAmount());
+		insertValues.put("participating", (expenseParticipant.isParticipating() ? 1 : 0));
+		
+		id = db.insert(TABLE_EXPENSE_PARTICIPANTS, null, insertValues);		
+		expenseParticipant.setId(id);
+		
+		Log.i(TAG, "Inserted " + expenseParticipant.toString());
+		return id;
+	}
+	
+	public int updateExpenseParticipant(ExpenseParticipant expenseParticipant) {
+		int rowsAffected = 0;
+		SQLiteDatabase db = this.getWritableDatabase();
+				
+		ContentValues updateValues = new ContentValues();
+		updateValues.put("eventId", expenseParticipant.getEventId());
+		updateValues.put("participantId", expenseParticipant.getParticipantId());
+		updateValues.put("paid", expenseParticipant.getPaid());
+		updateValues.put("allottedAmount", expenseParticipant.getAllottedAmount());
+		updateValues.put("participating", (expenseParticipant.isParticipating() ? 1 : 0));
+		
+		rowsAffected = db.update(TABLE_EXPENSE_PARTICIPANTS, updateValues, "id=?", new String[] {Long.toString(expenseParticipant.getId())});
+		
+		Log.i(TAG, "Updated " + expenseParticipant.toString());
+		return rowsAffected;		
+	}
+	
+	public int deleteExpenseParticipant(ExpenseParticipant expenseParticipant) {
+		int rowsAffected = 0;
+		if (expenseParticipant.getId() != -1) {
+			rowsAffected = deleteExpenseParticipant(expenseParticipant.getId());
+		}
+		
+		return rowsAffected;
+	}	
+	
+	public int deleteExpenseParticipant(long expenseParticipantId) {
+		int rowsAffected = 0;
+		SQLiteDatabase db = this.getWritableDatabase();
+		rowsAffected = db.delete(TABLE_EXPENSE_PARTICIPANTS, "id=" + expenseParticipantId,null);
+		Log.i(TAG,"Deleted ExpenseParticipant (Id = " + expenseParticipantId);
+		return rowsAffected;
+	}
+	
 		
 	public Participant getParticipant(long id) {
 		Participant participant = null;
