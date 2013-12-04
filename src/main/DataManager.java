@@ -107,6 +107,30 @@ public class DataManager extends SQLiteOpenHelper {
 		return rowsAffected;
 	}
 	
+	/**
+	 * Needs to be finished!!
+	 * @return
+	 * @throws Exception
+	 */
+	public List<Event> getAllEvents() throws Exception {
+		List<Event> entities = new ArrayList<Event>();
+		SQLiteDatabase db = this.getReadableDatabase();
+		
+		Cursor cursor = db.query(TABLE_EVENTS, null, null, null, null, null, null);
+		
+		while (cursor.moveToNext()) {
+			Event event = null; //placeholder
+			//Event event = new Event(cursor.getLong(0),
+										  //cursor.getLong(1),
+										  //cursor.getString(2),
+										  //cursor.getString(3),
+										  //cursor.getDouble(4));
+			
+			entities.add(event);
+		}		
+		return entities;
+	}	
+	
 	public ExpenseParticipant getExpenseParticipant(long id) {
 		ExpenseParticipant expenseParticipant = null;
 		SQLiteDatabase db = this.getReadableDatabase();

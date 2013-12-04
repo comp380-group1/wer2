@@ -44,6 +44,8 @@ public class MainActivity extends Activity {
 	Button newEventButton;
 	List<Event> events = null;
 	
+	DataManager dm = new DataManager(this.getApplicationContext());
+	
 	EventAdapter adapter;
 	
 	
@@ -55,14 +57,17 @@ public class MainActivity extends Activity {
 		newEventButton = (Button)findViewById(R.id.newevent);
 		newEventButton.setBackgroundColor(Color.GREEN);
 		
-		events = new ArrayList<Event>();
-		createEvents();
+		try {
+			events = dm.getAllEvents();
+		} catch(Exception e) {
+			Log.i("ERROR", "Couldn't load events - MainActivity");
+		}
 		
 		listview = (ListView)findViewById(R.id.lstText);
 		listview.setItemsCanFocus(true);
 		
-		//adapter = new EventAdapter(this, R.layout.viewevents_list_view_components, events);
-		//listview.setAdapter(adapter);
+		adapter = new EventAdapter(this, R.layout.viewevents_list_view_components, events);
+		listview.setAdapter(adapter);
 		
 		
 		/* This is for viewing the event, NOT editing the event
@@ -89,7 +94,6 @@ public class MainActivity extends Activity {
 	}
 	
 	public void createNewEvent(View view) {
-		DataManager dm = new DataManager(this.getApplicationContext());
 		Event e = new Event("Event One", false);
 		dm.saveEvent(e);
 		
@@ -102,7 +106,6 @@ public class MainActivity extends Activity {
 		try {
 			List<Payment> payments = dm.getPaymentsByEventId(1);
 		} catch (Exception e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 	}
@@ -110,33 +113,5 @@ public class MainActivity extends Activity {
 	
 	/////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////
-	
-	
-	/**
-	 * Realistically, this method would be used to grab the data from the database once the
-	 * app starts up.
-	 */
-	private void createEvents() {
-		
-		/*events.add(new Event("Big Bear", false));
-		events.add(new Event("Getting an Android for Matt", true));
-		events.add(new Event("Camping Trip", false));
-		events.add(new Event("Big Bear", false));
-		events.add(new Event("Getting an Android for Matt", true));
-		events.add(new Event("Camping Trip", false));
-		events.add(new Event("Big Bear", false));
-		events.add(new Event("Getting an Android for Matt", true));
-		events.add(new Event("Camping Trip", false));
-		events.add(new Event("Big Bear", false));
-		events.add(new Event("Getting an Android for Matt", true));
-		events.add(new Event("Camping Trip", false));
-		events.add(new Event("Big Bear", false));
-		events.add(new Event("Getting an Android for Matt", true));
-		events.add(new Event("Camping Trip", false));
-		events.add(new Event("Big Bear", false));
-		events.add(new Event("Getting an Android for Matt", true));
-		events.add(new Event("Camping Trip", false));*/
-		
-	}
 
 }
