@@ -23,13 +23,13 @@ public class DataManager extends SQLiteOpenHelper {
 	private final static String TABLE_EXPENSE_PARTICIPANTS="ExpenseParticipants";
 	private final static String TABLE_PAYMENTS = "Payments";
 	
-	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd",Locale.US);
+	public static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd",Locale.US);
 	
 	public DataManager(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
 	
-	private Date stringToDate(String dbDate) {
+	public static Date stringToDate(String dbDate) {
 		Date date = null;
 		try {
 			date = dateFormat.parse(dbDate);
@@ -39,7 +39,7 @@ public class DataManager extends SQLiteOpenHelper {
 		return date;
 	}
 	
-	private String dateToString(Date date) { 
+	public static String dateToString(Date date) { 
 		String stringDate = dateFormat.format(date);
 		return stringDate;
 	}
