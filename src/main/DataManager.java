@@ -119,12 +119,11 @@ public class DataManager extends SQLiteOpenHelper {
 		Cursor cursor = db.query(TABLE_EVENTS, null, null, null, null, null, null);
 		
 		while (cursor.moveToNext()) {
-			Event event = null; //placeholder
-			//Event event = new Event(cursor.getLong(0),
-										  //cursor.getLong(1),
-										  //cursor.getString(2),
-										  //cursor.getString(3),
-										  //cursor.getDouble(4));
+			Event event = new Event(cursor.getLong(0),
+					  cursor.getString(1),
+					  (cursor.getLong(2) == 0 ? false : true));
+			
+			Log.i(TAG, "Selecting " + event.toString());	
 			
 			entities.add(event);
 		}		
