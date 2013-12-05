@@ -27,10 +27,13 @@ public class EditEventAdapterActivity extends ArrayAdapter<EditEventContact> {
 
 	private int resource;
 	
+	List<EditEventContact> contacts;
+	
 	public EditEventAdapterActivity(Context context, int resource, List<EditEventContact> objects) {
 		
 		super(context, resource, objects);
 		this.resource = resource;
+		contacts = objects;
 	
 	}
 	
@@ -61,9 +64,16 @@ public class EditEventAdapterActivity extends ArrayAdapter<EditEventContact> {
 		if(contact.isAlreadyInEvent()) {
 			alertView.setBackgroundColor(Color.GREEN);
 		}
+		else {
+			alertView.setBackgroundColor(Color.WHITE);
+		}
 		
 		return alertView;
-		
+	}
+	
+	public void update(List<EditEventContact> contacts) {
+		this.contacts = contacts;
+		notifyDataSetChanged();
 	}
 
 }

@@ -1,10 +1,14 @@
 package editevent;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import viewevent.EventActivity;
+import viewevents.MainActivity;
 import wer.main.R;
 
+import main.DataManager;
 import main.Event;
 import main.Participant;
 
@@ -13,10 +17,15 @@ import android.provider.ContactsContract;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.util.Log;
 import android.view.Menu;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
 
 /**
  * Todo:
@@ -34,48 +43,95 @@ import android.widget.TextView;
 
 public class EditEventActivity extends Activity {
 
-	TextView eventName;
+	EditText eventName;
 	ListView participantsList;
 	Button newParticipantButton;
 	
-	long id;
-	Event event;
+	List<Participant> people;
+	List<EditEventContact> listViewContacts;
+	EditEventAdapterActivity adapter;
+	
+	Event event = null; //event object being edited/created
+	long id; //id of event being edited/created
+	
+	DataManager dm;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.editevent_activity);
 		
-		Intent intent = getIntent();
-		id = intent.getLongExtra("event_id", -1);
-		//query database with id to retrieve event
-		//if query returns -1 then we are creating a new event and the fields 
-		//should start unpopulated
+		dm = new DataManager(this.getApplicationContext());
 		
-		eventName = (TextView)findViewById(R.id.eventname);
+		Log.i("Group1", "here");
+		
+		eventName = (EditText)findViewById(R.id.eventname);
 		participantsList = (ListView)findViewById(R.id.participantslist);
 		newParticipantButton = (Button)findViewById(R.id.newparticipant);
 		
-		//if(id == -1) {
-		//	event = new Event();
-		//}
-		//else {
-		//	event = DataManager.getEvent(id);
-		//}
+		participantsList.setOnItemClickListener(new OnItemClickListener() {
+		    @Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		    	EditEventContact contact = listViewContacts.get(position);
+		    	contact.changeAlreadyInEventToOpposite();
+		    	adapter.update(listViewContacts);
+		    	participantsList.invalidate();
+		    	//participantsList.invalidateViews();
+		    	//adapter.notifyDataSetChanged();
+		    	//Intent intent = new Intent(MainActivity.this, EventActivity.class);
+		    	//long eventID = event.getId();
+		    	//intent.putExtra("id", eventID);
+		    	//startActivity(intent);
+		    }
+
+		});
 		
-		fetchContacts();
+		Intent intent = getIntent();
+		if(intent.getBooleanExtra("isForEditing", false)) { //start fields with data
+			id = intent.getLongExtra("event_id", -1);
+			event = dm.getEvent(id);
+			fetchContactsExistingEvent();
+			populateFieldsExistingEvent();
+		}
+		else {
+			fetchContactsNewEvent();
+			populateFieldsNewEvent();
+		}
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.layout.editevent_activity, menu);
 		return true;
 	}
 	
-	private void fetchContacts() {
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
 		
-		List<EditEventContact> listViewContacts = new ArrayList<EditEventContact>();
+		if(event == null) {
+			if(eventName.getText().toString().equals("")) { //if the user didn't enter an event name then we won't create a new event
+				Intent resultIntent = new Intent();
+				resultIntent.putExtra("event id", -1);
+				setResult(Activity.RESULT_OK, resultIntent);
+			}
+			event = new Event(eventName.getText().toString(), new Date(), false);
+		}
+		
+		id = dm.saveEvent(event);
+		
+		changeContactsToParticipants();
+		event.setParticipants(people);
+		
+		Intent resultIntent = new Intent();
+		resultIntent.putExtra("event id", id);
+		setResult(Activity.RESULT_OK, resultIntent);
+		finish();
+	}
+	
+	private void fetchContactsExistingEvent() {
+		
+		listViewContacts = new ArrayList<EditEventContact>();
 		
 		Cursor cursor = getContentResolver().query(
 				ContactsContract.CommonDataKinds.Phone.CONTENT_URI, 
@@ -103,8 +159,49 @@ public class EditEventActivity extends Activity {
 			
 		}
 		
-		EditEventAdapterActivity adapter = new EditEventAdapterActivity(this, R.layout.editevent_list_view_components, listViewContacts);
+		adapter = new EditEventAdapterActivity(this, R.layout.editevent_list_view_components, listViewContacts);
 		participantsList.setAdapter(adapter);
+	}
+	
+	private void fetchContactsNewEvent() {
+		listViewContacts = new ArrayList<EditEventContact>();
+		
+		Cursor cursor = getContentResolver().query(
+				ContactsContract.CommonDataKinds.Phone.CONTENT_URI, 
+				null, null,null, null);
+		
+		while (cursor.moveToNext()) {			
+			String name = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+			String phoneNumber = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+			
+			EditEventContact temp = new EditEventContact(name, phoneNumber, false);
+			listViewContacts.add(temp);
+			
+		}
+		
+		adapter = new EditEventAdapterActivity(this, R.layout.editevent_list_view_components, listViewContacts);
+		participantsList.setAdapter(adapter);
+	}
+	
+	private void populateFieldsExistingEvent() {
+		eventName.setText(event.getEventName());
+	}
+	
+	private void populateFieldsNewEvent() {
+		eventName.setText("");
+	}
+	
+	private void changeContactsToParticipants() {
+		
+		people = new ArrayList<Participant>();
+		for(int i = 0; i < listViewContacts.size(); i++) {
+			EditEventContact temp = listViewContacts.get(i);
+			if(temp.isAlreadyInEvent()) {
+				Participant participant = new Participant(temp.getName(), id, temp.getPhoneNumber(), 0.0);
+				dm.saveParticipant(participant);
+				people.add(participant);
+			}
+		}
 	}
 
 }

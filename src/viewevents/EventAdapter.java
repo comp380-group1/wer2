@@ -7,6 +7,7 @@ import wer.main.R;
 import main.Event;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,10 +32,14 @@ public class EventAdapter extends ArrayAdapter<Event> {
 
 	private int resource;
 	
+	List<Event> events;
+	
 	public EventAdapter(Context context, int resource, List<Event> objects) {
 		
 		super(context, resource, objects);
 		this.resource = resource;
+		
+		events = objects;
 	
 	}
 	
@@ -58,17 +63,17 @@ public class EventAdapter extends ArrayAdapter<Event> {
 		
 		TextView eventName = (TextView)alertView.findViewById(R.id.eventname);
 		TextView participants = (TextView)alertView.findViewById(R.id.participants);
-		ImageView image = (ImageView)alertView.findViewById(R.id.image);
-		ImageButton imageButton = (ImageButton)alertView.findViewById(R.id.editbutton);
+		//ImageView image = (ImageView)alertView.findViewById(R.id.image);
+		//ImageButton imageButton = (ImageButton)alertView.findViewById(R.id.editbutton);
 		
 		if(event.isReconciled()) {
-			//alertView.setBackgroundColor(Color.GRAY);
-			image.setImageResource(R.drawable.gray_button_updated);
-			imageButton.setImageResource(R.drawable.edit_pencil);
+			alertView.setBackgroundColor(Color.GRAY);
+			//image.setImageResource(R.drawable.gray_button_updated);
+			//imageButton.setImageResource(R.drawable.edit_pencil);
 		}
 		else {
-			//alertView.setBackgroundColor(Color.GREEN);
-			image.setImageResource(R.drawable.green_button_updated);
+			alertView.setBackgroundColor(Color.GREEN);
+			//image.setImageResource(R.drawable.green_button_updated);
 		}
 		
 		eventName.setSelected(true);
@@ -79,6 +84,11 @@ public class EventAdapter extends ArrayAdapter<Event> {
 		
 		return alertView;
 		
+	}
+	
+	public void update(List<Event> events) {
+		this.events = events;
+		notifyDataSetChanged();
 	}
 
 }

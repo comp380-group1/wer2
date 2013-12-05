@@ -3,20 +3,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <TextView
+    <EditText
         android:id="@+id/eventname"
+        android:inputType="text"
+        android:hint="Event Name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="38dp"
-        android:text="TextView" />
+        android:layout_marginTop="38dp" />
     
     <ListView
     	android:layout_width="fill_parent"
     	android:layout_height="fill_parent"
     	android:layout_marginTop="25dp"
-    	android:layout_alignTop="@+id/eventname"
+    	android:layout_below="@+id/eventname"
     	android:layout_above="@+id/newparticipant"
     	android:id="@+id/participantslist" />
     

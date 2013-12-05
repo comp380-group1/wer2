@@ -30,6 +30,12 @@ public class EditEventContact {
 	public void setName(String name) {	this.name = name;	}
 	public void setPhoneNumber(String number) {	this.number = number;	}
 	public void isAlreadyInEvent(boolean status) {	this.isAlreadyInEvent = status;	}
+	public void changeAlreadyInEventToOpposite() {
+		if(isAlreadyInEvent)
+			isAlreadyInEvent = false;
+		else
+			isAlreadyInEvent = true;
+	}
 	
 	
 }

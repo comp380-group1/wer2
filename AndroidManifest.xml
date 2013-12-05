@@ -25,6 +25,10 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="editevent.EditEventActivity"
+            android:label="@string/title_activity_edit_event_activity" >
+        </activity>
+        <activity
             android:name="viewevent.EventActivity"
             android:label="@string/title_activity_event" >
         </activity>

@@ -1,9 +1,12 @@
 package viewevents;
 
+import java.util.Date;
 import java.util.List;
 
 
 import java.util.ArrayList;
+
+import editevent.EditEventActivity;
 
 import viewevent.EventActivity;
 import wer.main.R;
@@ -23,6 +26,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 /**
  * Todo: 
@@ -44,15 +48,19 @@ public class MainActivity extends Activity {
 	Button newEventButton;
 	List<Event> events = null;
 	
-	DataManager dm = new DataManager(this.getApplicationContext());
+	DataManager dm;
 	
 	EventAdapter adapter;
+	
+	public static final int EDIT_EVENT = 382497;
 	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.viewevents_main);
+		
+		dm = new DataManager(this.getApplicationContext());
 		
 		newEventButton = (Button)findViewById(R.id.newevent);
 		newEventButton.setBackgroundColor(Color.GREEN);
@@ -93,25 +101,46 @@ public class MainActivity extends Activity {
 		return true;
 	}
 	
-	public void createNewEvent(View view) {
-		Event e = new Event("Event One", false);
+	/*public void createNewEvent(View view) {
+		Event e = new Event("Big Bear", new Date(), false);
 		dm.saveEvent(e);
 		
 		Payment p = new Payment(2, "Matt", "Denis", 5.00);
 		dm.savePayment(p);
 		
 		p = dm.getPayment(p.getId());
-		Log.i("DataManager",p.toString());
 		
 		try {
 			List<Payment> payments = dm.getPaymentsByEventId(1);
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
+	}*/
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+	  super.onActivityResult(requestCode, resultCode, data);
+	  switch(requestCode) {
+	    case (EDIT_EVENT) : {
+	      if (resultCode == Activity.RESULT_OK) {
+	        Event event = dm.getEvent(data.getLongExtra("event id", -1));
+	        if(event == null) {
+	        	Toast.makeText(getApplicationContext(), "Problem saving event", 4).show();
+	        }
+	        else {
+	        	events.add(event);
+	        	adapter.update(events);
+	        	listview.invalidate();
+	        }
+	      }
+	      break;
+	    } 
+	  }
 	}
 	
-	
-	/////////////////////////////////////////////////////////////////////////////////////////
-	/////////////////////////////////////////////////////////////////////////////////////////
-
+	public void createNewEvent(View view) {
+		Intent intent = new Intent(MainActivity.this, EditEventActivity.class);
+		intent.putExtra("isForEditing", false); //start activity with blank fields
+		startActivityForResult(intent, EDIT_EVENT);
+	}
 }
