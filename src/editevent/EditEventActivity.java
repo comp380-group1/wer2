@@ -101,7 +101,8 @@ public class EditEventActivity extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.layout.editevent_activity, menu);
+		//getMenuInflater().inflate(R.layout.editevent_activity, menu);
+		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
 	

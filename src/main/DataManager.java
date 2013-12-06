@@ -161,11 +161,11 @@ public class DataManager extends SQLiteOpenHelper {
 				 null, null, null);
 		
 		if (cursor.moveToFirst()) {
-			//expense = new Expense(cursor.getLong(0),
-	  							//cursor.getLong(1),
-	  							//cursor.getString(2),
-	  						    //stringToDate(cursor.getString(3)),
-	  							//cursor.getDouble(4));
+			expense = new Expense(cursor.getLong(0),
+	  							cursor.getLong(1),
+	  							cursor.getString(2),
+	  						    stringToDate(cursor.getString(3)),
+	  							cursor.getDouble(4));
 			Log.i(TAG, "Selecting " + expense.toString());			
 		}
 		
