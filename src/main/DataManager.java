@@ -306,7 +306,7 @@ public class DataManager extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getReadableDatabase();
 		
 		Cursor cursor = db.query(TABLE_PARTICIPANTS,
-				 null, 
+				 null,  
 				 "eventId=?",
 				 new String[] {Long.toString(eventId)},
 				 null, null, null);
