@@ -299,7 +299,30 @@ public class DataManager extends SQLiteOpenHelper {
 			entities.add(participant);
 		}		
 		return entities;
-	}	
+	}
+	
+	public List<Participant> getParticipantsByEventId(long eventId) throws Exception {
+		List<Participant> entities = new ArrayList<Participant>();
+		SQLiteDatabase db = this.getReadableDatabase();
+		
+		Cursor cursor = db.query(TABLE_PARTICIPANTS,
+				 null, 
+				 "eventId=?",
+				 new String[] {Long.toString(eventId)},
+				 null, null, null);
+		
+		while (cursor.moveToNext()) {
+			Participant participant = new Participant(cursor.getLong(0),
+										  			  cursor.getLong(1),
+										  			  cursor.getString(2),
+										  			  cursor.getString(3),
+										  			  cursor.getDouble(4));
+			Log.i(TAG, "Selecting " + participant.toString());
+			
+			entities.add(participant);
+		}		
+		return entities;
+	}
 
 	public long saveParticipant(Participant participant) {
 		long id = -1;
