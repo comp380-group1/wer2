@@ -1,5 +1,6 @@
 package main;
 
+import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
@@ -16,11 +17,30 @@ import main.Participant;
  */
 public class Expense {
 
-	private List<ExpenseParticipant> participants = new ArrayList<ExpenseParticipant>();
+	private long id = -1;
 	private long eventId;
-	private Event event;
 	private String name;
+	private Date date;
 	private double amount;
+	
+	private Event event;
+	private List<ExpenseParticipant> participants = new ArrayList<ExpenseParticipant>();
+
+	
+	public Expense(long id, long eventId, String name, Date date, double amount) {
+		this.setId(id);
+		this.setEventId(eventId);
+		this.name = name;
+		this.setDate(date);
+		this.amount = amount;
+	}
+	
+	public Expense(long eventId, String name, Date date, double amount) {
+		this.setEventId(eventId);
+		this.name = name;
+		this.setDate(date);
+		this.amount = amount;
+	}
 	
 	public Expense(Event event, String name) {
 		
@@ -162,6 +182,30 @@ public class Expense {
 			temp.add(participants.get(i).isParticipating());
 		}
 		return temp;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public long getEventId() {
+		return eventId;
+	}
+
+	public void setEventId(long eventId) {
+		this.eventId = eventId;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
 	}
 	
 }
