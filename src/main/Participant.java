@@ -25,9 +25,12 @@ public class Participant implements Comparable<Participant> {
 		this.currentBalance = currentBalance;
 	}
 	
-	public Participant(String name) {
+	public Participant(String name, long eventId, String phoneNumber) {
+		this.id = -1;
+		this.eventId = eventId;
 		this.name = name;
-		currentBalance = 0.0;
+		this.phoneNumber = phoneNumber;
+		this.currentBalance = 0.0;
 	}
 	
 	public void setId(long id) {

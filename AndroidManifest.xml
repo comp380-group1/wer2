@@ -45,6 +45,10 @@
             android:name="contacts.AddFromContactsActivity"
             android:label="@string/title_activity_add_from_contacts" >
         </activity>
+        <activity
+            android:name="contacts.AddContactsAdapterActivity"
+            android:label="@string/title_activity_add_contacts_adapter" >
+        </activity>
     </application>
 
 </manifest>

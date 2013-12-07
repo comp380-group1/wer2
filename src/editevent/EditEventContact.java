@@ -14,22 +14,26 @@ public class EditEventContact {
 	private String name;
 	private String number;
 	private boolean isAlreadyInEvent;
+	private long id;
 	
-	public EditEventContact(String name, String number, boolean isAlreadyInEvent) {
+	public EditEventContact(String name, String number, boolean isAlreadyInEvent, long id) {
 		
 		this.name = name;
 		this.number = number;
 		this.isAlreadyInEvent = isAlreadyInEvent;
+		this.id = id;
 		
 	}
 	
 	public String getName() {	return name;	}
 	public String getPhoneNumber() {	return number;	}
 	public boolean isAlreadyInEvent() {	return isAlreadyInEvent;	}
+	public long getId() {	return id;	}
 	
 	public void setName(String name) {	this.name = name;	}
 	public void setPhoneNumber(String number) {	this.number = number;	}
 	public void isAlreadyInEvent(boolean status) {	this.isAlreadyInEvent = status;	}
+	public void setId(long id) {	this.id = id;	}
 	public void changeAlreadyInEventToOpposite() {
 		if(isAlreadyInEvent)
 			isAlreadyInEvent = false;

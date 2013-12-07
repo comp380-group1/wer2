@@ -131,6 +131,13 @@ public class MainActivity extends Activity {
 	        case 1: //delete
 	        	events.remove(event);
 	        	dm.deleteEvent(event);
+	        	try {
+	        		events = dm.getAllEvents();
+	        	} catch (Exception e) {
+	        		e.printStackTrace();
+	        	}
+	        	adapter = new EventAdapter(this, R.layout.viewevents_list_view_components, events);
+	    		listview.setAdapter(adapter);
 	        	refreshListView();
 	        	break;
 	        default: //cancel
@@ -164,6 +171,8 @@ public class MainActivity extends Activity {
 					} catch(Exception e) {
 						Log.i("ERROR", "Couldn't load events - MainActivity");
 					}
+					adapter = new EventAdapter(this, R.layout.viewevents_list_view_components, events);
+					listview.setAdapter(adapter);
 					refreshListView();
 				}
 				break;
@@ -182,5 +191,11 @@ public class MainActivity extends Activity {
 		adapter.update(events);
 		adapter.notifyDataSetChanged();
     	listview.invalidate();
+	}
+	
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		dm.close();
 	}
 }

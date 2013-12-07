@@ -1,6 +1,8 @@
-package editevent;
+package contacts;
 
 import java.util.List;
+
+import editevent.EditEventContact;
 
 import wer.main.R;
 
@@ -17,19 +19,18 @@ import android.widget.TextView;
  * Todo: COMPLETED
  * 
  * @author Matt Hamersky
- * @info Adapter class for EditEventActivity.class, handles displaying the event name and list of contacts for
- * an event.
+ * @info Adapter class for AddFromContactsActivity.class, handles displaying the contacts name and number.
  * Uses layouts: editevent_list_view_components
  *
  */
 
-public class EditEventAdapterActivity extends ArrayAdapter<EditEventContact> {
+public class AddContactsAdapterActivity extends ArrayAdapter<EditEventContact> {
 
 	private int resource;
 	
 	List<EditEventContact> contacts;
 	
-	public EditEventAdapterActivity(Context context, int resource, List<EditEventContact> objects) {
+	public AddContactsAdapterActivity(Context context, int resource, List<EditEventContact> objects) {
 		
 		super(context, resource, objects);
 		this.resource = resource;
@@ -42,8 +43,7 @@ public class EditEventAdapterActivity extends ArrayAdapter<EditEventContact> {
 		
 		LinearLayout alertView;
 		
-		//EditEventContact contact = getItem(position);
-		EditEventContact contact = contacts.get(position);
+		EditEventContact contact = getItem(position);
 		
 		if(convertView == null) {
 			alertView = new LinearLayout(getContext());
@@ -62,18 +62,18 @@ public class EditEventAdapterActivity extends ArrayAdapter<EditEventContact> {
 		name.setText(contact.getName());
 		number.setText(contact.getPhoneNumber());
 		
-		/*if(contact.isAlreadyInEvent()) {
+		if(contact.isAlreadyInEvent()) {
 			alertView.setBackgroundColor(Color.GREEN);
 		}
 		else {
 			alertView.setBackgroundColor(Color.WHITE);
-		}*/
+		}
 		
 		return alertView;
 	}
 	
 	public void update(List<EditEventContact> contacts) {
-		this.contacts = contacts;
+		//this.contacts = contacts;
 		notifyDataSetChanged();
 	}
 

@@ -115,6 +115,16 @@ public class Event {
 		}
 		return people;
 	}
+	
+	public Participant findParticipant(String name, String number) {
+		for(int i = 0; i < participants.size(); i++) {
+			if(participants.get(i).getName().equals(name) &&
+					participants.get(i).getPhoneNumber().equals(number)) {
+				return participants.get(i);
+			}
+		}
+		return null;
+	}
 
 	public String toString() {
 		return "Event (id=" + getId() + ",name=" + getName() + ",date=" + getDate() + ",isReconciled=" + getIsReconciled() + ")";
