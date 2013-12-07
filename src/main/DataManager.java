@@ -220,6 +220,53 @@ public class DataManager extends SQLiteOpenHelper {
 		return entities;
 	}
 	
+	public long saveExpense(Expense expense) {
+		long id = -1;
+		
+		if (expense.getId() > -1) {
+			updateExpense(expense);
+			id = expense.getId();
+		} else {
+			id = insertExpense(expense);
+		}
+		
+		return id;
+	}
+	
+	public long insertExpense(Expense expense) {
+		long id = -1;
+		SQLiteDatabase db = this.getWritableDatabase();
+		ContentValues insertValues = new ContentValues();
+		
+		insertValues.put("eventId", expense.getEventId());
+		insertValues.put("name", expense.getName());
+		insertValues.put("date", dateToString(expense.getDate()));
+		insertValues.put("amount", expense.getAmount());
+		
+		id = db.insert(TABLE_EXPENSES, null, insertValues);		
+		expense.setId(id);
+		
+		Log.i(TAG, "Inserted " + expense.toString());
+		return id;
+	}
+	
+	public long updateExpense(Expense expense) {
+		int rowsAffected = 0;
+		SQLiteDatabase db = this.getWritableDatabase();
+				
+		ContentValues updateValues = new ContentValues();
+
+		updateValues.put("eventId", expense.getEventId());
+		updateValues.put("name", expense.getName());
+		updateValues.put("date", dateToString(expense.getDate()));
+		updateValues.put("amount", expense.getAmount());
+		
+		rowsAffected = db.update(TABLE_EXPENSES, updateValues, "id=?", new String[] {Long.toString(expense.getId())});
+		
+		Log.i(TAG, "Updated " + expense.toString());
+		return rowsAffected;
+	}
+	
 	public ExpenseParticipant getExpenseParticipant(long id) {
 		ExpenseParticipant expenseParticipant = null;
 		SQLiteDatabase db = this.getReadableDatabase();
