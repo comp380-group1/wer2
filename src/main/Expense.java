@@ -25,8 +25,15 @@ public class Expense {
 	
 	private Event event;
 	private List<ExpenseParticipant> participants = new ArrayList<ExpenseParticipant>();
-
 	
+	public List<ExpenseParticipant> getParticipants() {
+		return participants;
+	}
+
+	public void setParticipants(List<ExpenseParticipant> participants) {
+		this.participants = participants;
+	}
+
 	public Expense(long id, long eventId, String name, Date date, double amount) {
 		this.setId(id);
 		this.setEventId(eventId);
@@ -207,5 +214,7 @@ public class Expense {
 	public void setDate(Date date) {
 		this.date = date;
 	}
+	
+	
 	
 }

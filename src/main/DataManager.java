@@ -59,17 +59,31 @@ public class DataManager extends SQLiteOpenHelper {
 	  				cursor.getString(1),
 	  				stringToDate(cursor.getString(2)),
 	  				(cursor.getLong(3) == 0 ? false : true));
-			Log.i(TAG, "Selecting " + event.toString());			
+			
+			Log.i(TAG, "Selecting " + event.toString());
+			
+			//pull nested expenses, participants
+			List<Expense> expenses = null;
+			try {
+				expenses = getExpensesByEventId(id);
+			} catch (Exception e) {		
+				expenses = new ArrayList<Expense>();
+			}
+			
+			List<Participant> participants = null;
+			try {
+				participants = getParticipantsByEventId(id);
+			} catch (Exception e) {
+				participants = new ArrayList<Participant>();
+			}
+			
+			event.setExpenses(expenses);
+			event.setParticipants(participants);
 		}
 		
 		return event;
 	}
 	
-	/**
-	 * Needs to be finished!!
-	 * @return
-	 * @throws Exception
-	 */
 	public List<Event> getAllEvents() throws Exception {
 		List<Event> entities = new ArrayList<Event>();
 		SQLiteDatabase db = this.getReadableDatabase();
@@ -172,6 +186,40 @@ public class DataManager extends SQLiteOpenHelper {
 		return expense;
 	}
 	
+	public List<Expense> getExpensesByEventId(long eventId) throws Exception {
+		List<Expense> entities = new ArrayList<Expense>();
+		SQLiteDatabase db = this.getReadableDatabase();
+		
+		Cursor cursor = db.query(TABLE_EXPENSES,
+				 null,  
+				 "eventId=?",
+				 new String[] {Long.toString(eventId)},
+				 null, null, null);
+		
+		while (cursor.moveToNext()) {
+			Expense expense = new Expense(cursor.getLong(0),
+								  cursor.getLong(1),
+								  cursor.getString(2),
+								  stringToDate(cursor.getString(3)),
+								  cursor.getDouble(4));
+			
+			Log.i(TAG, "Selecting " + expense.toString());
+			
+			//Load nested ExpenseParticipants
+			List<ExpenseParticipant> expenseParticipants = null;
+			try {
+				expenseParticipants = getExpenseParticipantsByExpenseId(expense.getId());
+			} catch (Exception e) {		
+				expenseParticipants = new ArrayList<ExpenseParticipant>();
+			}
+			
+			expense.setParticipants(expenseParticipants);	
+
+			entities.add(expense);
+		}		
+		return entities;
+	}
+	
 	public ExpenseParticipant getExpenseParticipant(long id) {
 		ExpenseParticipant expenseParticipant = null;
 		SQLiteDatabase db = this.getReadableDatabase();
@@ -194,6 +242,56 @@ public class DataManager extends SQLiteOpenHelper {
 		
 		return expenseParticipant;
 	}	
+	
+	public List<ExpenseParticipant> getExpenseParticipantsByParticipantId(long participantId) throws Exception {
+		List<ExpenseParticipant> entities = new ArrayList<ExpenseParticipant>();
+		SQLiteDatabase db = this.getReadableDatabase();
+		
+		Cursor cursor = db.query(TABLE_EXPENSE_PARTICIPANTS,
+				 null,  
+				 "participantId=?",
+				 new String[] {Long.toString(participantId)},
+				 null, null, null);
+		
+		while (cursor.moveToNext()) {
+			ExpenseParticipant expenseParticipant = new ExpenseParticipant(cursor.getLong(0),
+																	       cursor.getLong(1),
+																	       cursor.getLong(2),
+																	       cursor.getDouble(3),
+																	       cursor.getDouble(4),
+																	       (cursor.getInt(5) == 0 ? false : true));
+			
+			Log.i(TAG, "Selecting " + expenseParticipant.toString());
+			
+			entities.add(expenseParticipant);
+		}		
+		return entities;
+	}
+
+	public List<ExpenseParticipant> getExpenseParticipantsByExpenseId(long expenseId) throws Exception {
+		List<ExpenseParticipant> entities = new ArrayList<ExpenseParticipant>();
+		SQLiteDatabase db = this.getReadableDatabase();
+		
+		Cursor cursor = db.query(TABLE_EXPENSE_PARTICIPANTS,
+				 null,  
+				 "expenseId=?",
+				 new String[] {Long.toString(expenseId)},
+				 null, null, null);
+		
+		while (cursor.moveToNext()) {
+			ExpenseParticipant expenseParticipant = new ExpenseParticipant(cursor.getLong(0),
+																	       cursor.getLong(1),
+																	       cursor.getLong(2),
+																	       cursor.getDouble(3),
+																	       cursor.getDouble(4),
+																	       (cursor.getInt(5) == 0 ? false : true));
+			
+			Log.i(TAG, "Selecting " + expenseParticipant.toString());
+			
+			entities.add(expenseParticipant);
+		}		
+		return entities;
+	}
 	
 	public long saveExpenseParticipant(ExpenseParticipant expenseParticipant) {
 		long id = -1;

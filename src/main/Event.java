@@ -55,6 +55,7 @@ public class Event {
 	}
 	
 	public void addExpense(Expense newExpense) {
+		newExpense.setEventId(this.id);
 		expenses.add(newExpense);
 	}
 	
@@ -69,6 +70,14 @@ public class Event {
 	///////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////
 	
+	public List<Expense> getExpenses() {
+		return expenses;
+	}
+
+	public void setExpenses(List<Expense> expenses) {
+		this.expenses = expenses;
+	}
+
 	public void setParticipants(List<Participant> people) {
 		participants = people;
 	}
