@@ -267,6 +267,23 @@ public class DataManager extends SQLiteOpenHelper {
 		return rowsAffected;
 	}
 	
+	public int deleteExpense(Expense expense) {
+		int rowsAffected = 0;
+		if (expense.getId() != -1) {
+			rowsAffected = deleteExpense(expense.getId());
+		}
+		
+		return rowsAffected;
+	}	
+	
+	public int deleteExpense(long expenseId) {
+		int rowsAffected = 0;
+		SQLiteDatabase db = this.getWritableDatabase();
+		rowsAffected = db.delete(TABLE_EXPENSES, "id=" + expenseId,null);
+		Log.i(TAG,"Deleted Expense (Id = " + expenseId);
+		return rowsAffected;
+	}
+	
 	public ExpenseParticipant getExpenseParticipant(long id) {
 		ExpenseParticipant expenseParticipant = null;
 		SQLiteDatabase db = this.getReadableDatabase();
