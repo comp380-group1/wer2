@@ -14,7 +14,7 @@ import android.util.Log;
 
 public class DataManager extends SQLiteOpenHelper {
 	private final static String DATABASE_NAME = "dbfile";
-	private final static int DATABASE_VERSION = 18;
+	private final static int DATABASE_VERSION = 19;
 	private final static String TAG = "com.group1.wer.DataManager";
 	
 	private final static String TABLE_PARTICIPANTS = "Participants";
@@ -663,6 +663,7 @@ public class DataManager extends SQLiteOpenHelper {
 				  "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
 				  "eventId INTEGER, " +
 				  "name TEXT, " +
+				  "date TEXT, " + 
 				  "amount REAL)";
 		db.execSQL(sql);
 		
