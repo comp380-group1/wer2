@@ -215,6 +215,8 @@ public class Expense {
 		this.date = date;
 	}
 	
-	
+	public String toString() {
+		return "Expense (id=" + getId() + ",eventId=" + getEventId() + ",name=" + getName() + ",date=" + getDate() + ",amount=" + getAmount() + ")";
+	}
 	
 }
