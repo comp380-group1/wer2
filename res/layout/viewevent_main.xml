@@ -9,8 +9,18 @@
     tools:context=".EventActivity" >
 
     <TextView
+        android:id="@+id/eventname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="18dp"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+    
+    <ListView
+    	android:layout_width="fill_parent"
+    	android:layout_height="fill_parent"
+    	android:layout_alignTop="@+id/eventname"
+    	android:id="@+id/participantslist" />
 
 </RelativeLayout>

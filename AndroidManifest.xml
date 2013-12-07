@@ -26,7 +26,8 @@
         </activity>
         <activity
             android:name="editevent.EditEventActivity"
-            android:label="@string/title_activity_edit_event_activity" >
+            android:label="@string/title_activity_edit_event_activity"
+            android:windowSoftInputMode="stateUnchanged|adjustPan" >
         </activity>
         <activity
             android:name="viewevent.EventActivity"
@@ -39,6 +40,10 @@
         <activity
             android:name="editexpense.EditExpenseActivity"
             android:label="@string/title_activity_edit_expense" >
+        </activity>
+        <activity
+            android:name="contacts.AddFromContactsActivity"
+            android:label="@string/title_activity_add_from_contacts" >
         </activity>
     </application>
 

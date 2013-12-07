@@ -18,8 +18,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -45,7 +48,7 @@ public class EditEventActivity extends Activity {
 
 	EditText eventName;
 	ListView participantsList;
-	Button newParticipantButton;
+	Button finishEvent;
 	
 	List<Participant> people;
 	List<EditEventContact> listViewContacts;
@@ -67,7 +70,7 @@ public class EditEventActivity extends Activity {
 		
 		eventName = (EditText)findViewById(R.id.eventname);
 		participantsList = (ListView)findViewById(R.id.participantslist);
-		newParticipantButton = (Button)findViewById(R.id.newparticipant);
+		finishEvent = (Button)findViewById(R.id.finish);
 		
 		participantsList.setOnItemClickListener(new OnItemClickListener() {
 		    @Override
@@ -76,15 +79,11 @@ public class EditEventActivity extends Activity {
 		    	contact.changeAlreadyInEventToOpposite();
 		    	adapter.update(listViewContacts);
 		    	participantsList.invalidate();
-		    	//participantsList.invalidateViews();
-		    	//adapter.notifyDataSetChanged();
-		    	//Intent intent = new Intent(MainActivity.this, EventActivity.class);
-		    	//long eventID = event.getId();
-		    	//intent.putExtra("id", eventID);
-		    	//startActivity(intent);
 		    }
 
 		});
+		
+		registerForContextMenu(participantsList);
 		
 		Intent intent = getIntent();
 		if(intent.getBooleanExtra("isForEditing", false)) { //start fields with data
@@ -101,33 +100,12 @@ public class EditEventActivity extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		//getMenuInflater().inflate(R.layout.editevent_activity, menu);
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
 	
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
+	public void addParticipants(View view) {
 		
-		if(event == null) {
-			if(eventName.getText().toString().equals("")) { //if the user didn't enter an event name then we won't create a new event
-				Intent resultIntent = new Intent();
-				resultIntent.putExtra("event id", -1);
-				setResult(Activity.RESULT_OK, resultIntent);
-			}
-			event = new Event(eventName.getText().toString(), new Date(), false);
-		}
-		
-		id = dm.saveEvent(event);
-		
-		changeContactsToParticipants();
-		event.setParticipants(people);
-		
-		Intent resultIntent = new Intent();
-		resultIntent.putExtra("event id", id);
-		setResult(Activity.RESULT_OK, resultIntent);
-		finish();
 	}
 	
 	private void fetchContactsExistingEvent() {
@@ -186,10 +164,37 @@ public class EditEventActivity extends Activity {
 	
 	private void populateFieldsExistingEvent() {
 		eventName.setText(event.getEventName());
+		finishEvent.setText("Finish");
 	}
 	
 	private void populateFieldsNewEvent() {
 		eventName.setText("");
+		finishEvent.setText("Create Event");
+	}
+	
+	public void finished(View view) {
+		if(event == null) {
+			if(eventName.getText().toString().equals("")) { //if the user didn't enter an event name then we won't create a new event
+				Intent resultIntent = new Intent();
+				resultIntent.putExtra("event id", -1);
+				setResult(Activity.RESULT_OK, resultIntent);
+			}
+			event = new Event(eventName.getText().toString(), new Date(), false);
+		}
+		else {
+			event.setName(eventName.getText().toString());
+		}
+		
+		id = dm.saveEvent(event);
+		
+		changeContactsToParticipants();
+		event.setParticipants(people);
+		
+		Intent resultIntent = new Intent();
+		resultIntent.putExtra("event id", id);
+		setResult(Activity.RESULT_OK, resultIntent);
+		dm.close();
+		finish();
 	}
 	
 	private void changeContactsToParticipants() {
@@ -203,6 +208,35 @@ public class EditEventActivity extends Activity {
 				people.add(participant);
 			}
 		}
+	}
+	
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+	  //if (v.getId()==R.id.list) {
+	    AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
+	    menu.setHeaderTitle(listViewContacts.get(info.position).getName());
+	    String[] menuItems = {"Edit", "Delete", "Cancel"};
+	    for (int i = 0; i<menuItems.length; i++) {
+	      menu.add(Menu.NONE, i, i, menuItems[i]);
+	    }
+	  //}
+	}
+	
+	@Override
+    public boolean onContextItemSelected(MenuItem item){
+        switch(item.getItemId()){
+	        case 0:  //edit
+	            
+	            break;
+	        case 1: //delete
+	        	
+	        	break;
+	        default: //cance
+	        	break;
+        }
+        
+        return true;
+        
 	}
 
 }

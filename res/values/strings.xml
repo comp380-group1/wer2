@@ -13,5 +13,6 @@
     <string name="title_activity_edit_expense">EditExpenseActivity</string>
     <string name="title_activity_test_data_manager">TestDataManager</string>
     <string name="title_activity_edit_event_activity">EditEventActivity2</string>
+    <string name="title_activity_add_from_contacts">AddFromContactsActivity</string>
 
 </resources>

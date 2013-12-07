@@ -72,7 +72,7 @@ public class EditEventAdapterActivity extends ArrayAdapter<EditEventContact> {
 	}
 	
 	public void update(List<EditEventContact> contacts) {
-		this.contacts = contacts;
+		//this.contacts = contacts;
 		notifyDataSetChanged();
 	}
 

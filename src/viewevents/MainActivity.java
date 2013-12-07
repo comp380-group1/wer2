@@ -20,20 +20,23 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
 /**
  * Todo: 
- * -Add functionality for editing an event (whether that is HOLD-CLICK the row or ON-CLICK for
- * 		an edit button).
- * -Add functionality for connecting with the database.
- * -Add functionality for creating a new event (requires launching the add/edit activity).
+ * -Fix refreshing listview after editing an event
+ * -Make sure participants are actually being saved to the event
  * 
  * @author Matt Hamersky
  * @info Activity launched when the application starts.  Displays all the events that the user has
@@ -46,13 +49,15 @@ public class MainActivity extends Activity {
 	
 	ListView listview;
 	Button newEventButton;
+	
 	List<Event> events = null;
 	
 	DataManager dm;
 	
 	EventAdapter adapter;
 	
-	public static final int EDIT_EVENT = 382497;
+	public static final int EDIT_EVENT = 382497; //random number for onActivityResult - shouldn't interfere with any other results
+	public static final int NEW_EVENT = 4327532;
 	
 	
 	@Override
@@ -63,7 +68,6 @@ public class MainActivity extends Activity {
 		dm = new DataManager(this.getApplicationContext());
 		
 		newEventButton = (Button)findViewById(R.id.newevent);
-		newEventButton.setBackgroundColor(Color.GREEN);
 		
 		try {
 			events = dm.getAllEvents();
@@ -92,6 +96,8 @@ public class MainActivity extends Activity {
 		    }
 
 		});
+		
+		registerForContextMenu(listview);
 	}
 
 	@Override
@@ -100,46 +106,81 @@ public class MainActivity extends Activity {
 		return true;
 	}
 	
-	/*public void createNewEvent(View view) {
-		Event e = new Event("Big Bear", new Date(), false);
-		dm.saveEvent(e);
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+	    AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
+	    menu.setHeaderTitle(events.get(info.position).getName());
+	    String[] menuItems = {"Edit", "Delete", "Cancel"};
+	    for (int i = 0; i<menuItems.length; i++) {
+	      menu.add(Menu.NONE, i, i, menuItems[i]);
+	    }
+	}
+	
+	@Override
+    public boolean onContextItemSelected(MenuItem item){
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+		Event event = (Event)listview.getAdapter().getItem(info.position);
 		
-		Payment p = new Payment(2, "Matt", "Denis", 5.00);
-		dm.savePayment(p);
-		
-		p = dm.getPayment(p.getId());
-		
-		try {
-			List<Payment> payments = dm.getPaymentsByEventId(1);
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		}
-	}*/
+        switch(item.getItemId()){
+	        case 0:  //edit
+	            Intent intent = new Intent(MainActivity.this, EditEventActivity.class);
+	            intent.putExtra("isForEditing", true);
+	            intent.putExtra("event_id", event.getId());
+	            startActivityForResult(intent, EDIT_EVENT);
+	            break;
+	        case 1: //delete
+	        	events.remove(event);
+	        	dm.deleteEvent(event);
+	        	refreshListView();
+	        	break;
+	        default: //cancel
+	        	break;
+        }
+        
+        return true;
+        
+	}
 	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-	  super.onActivityResult(requestCode, resultCode, data);
-	  switch(requestCode) {
-	    case (EDIT_EVENT) : {
-	      if (resultCode == Activity.RESULT_OK) {
-	        Event event = dm.getEvent(data.getLongExtra("event id", -1));
-	        if(event == null) {
-	        	Toast.makeText(getApplicationContext(), "Problem saving event", 4).show();
-	        }
-	        else {
-	        	events.add(event);
-	        	adapter.update(events);
-	        	listview.invalidate();
-	        }
-	      }
-	      break;
-	    } 
-	  }
+		super.onActivityResult(requestCode, resultCode, data);
+		switch(requestCode) {
+			case NEW_EVENT:
+				if (resultCode == Activity.RESULT_OK) {
+					Event event = dm.getEvent(data.getLongExtra("event id", -1));
+			    	if(event == null) {
+			    		Toast.makeText(getApplicationContext(), "Problem saving event", 4).show();
+			        }
+			        else {
+			        	events.add(event);
+			        	refreshListView();
+			        }
+				}
+			    break;
+			case EDIT_EVENT:
+				if(resultCode == Activity.RESULT_OK) {
+					try {
+						events = dm.getAllEvents();  //because we freakin can
+					} catch(Exception e) {
+						Log.i("ERROR", "Couldn't load events - MainActivity");
+					}
+					refreshListView();
+				}
+				break;
+			default:
+		    	break;
+		}
 	}
 	
 	public void createNewEvent(View view) {
 		Intent intent = new Intent(MainActivity.this, EditEventActivity.class);
 		intent.putExtra("isForEditing", false); //start activity with blank fields
-		startActivityForResult(intent, EDIT_EVENT);
+		startActivityForResult(intent, NEW_EVENT);
+	}
+	
+	private void refreshListView() {
+		adapter.update(events);
+		adapter.notifyDataSetChanged();
+    	listview.invalidate();
 	}
 }

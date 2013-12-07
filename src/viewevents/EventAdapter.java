@@ -49,6 +49,7 @@ public class EventAdapter extends ArrayAdapter<Event> {
 		LinearLayout alertView;
 		
 		Event event = getItem(position);
+		//Event event = events.get(position);
 		
 		if(convertView == null) {
 			alertView = new LinearLayout(getContext());
@@ -63,17 +64,12 @@ public class EventAdapter extends ArrayAdapter<Event> {
 		
 		TextView eventName = (TextView)alertView.findViewById(R.id.eventname);
 		TextView participants = (TextView)alertView.findViewById(R.id.participants);
-		//ImageView image = (ImageView)alertView.findViewById(R.id.image);
-		//ImageButton imageButton = (ImageButton)alertView.findViewById(R.id.editbutton);
 		
 		if(event.isReconciled()) {
 			alertView.setBackgroundColor(Color.GRAY);
-			//image.setImageResource(R.drawable.gray_button_updated);
-			//imageButton.setImageResource(R.drawable.edit_pencil);
 		}
 		else {
-			alertView.setBackgroundColor(Color.GREEN);
-			//image.setImageResource(R.drawable.green_button_updated);
+			alertView.setBackgroundColor(Color.parseColor("#3BA81D"));
 		}
 		
 		eventName.setSelected(true);
