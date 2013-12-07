@@ -17,10 +17,14 @@ import main.Participant;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -68,14 +72,14 @@ public class EditEventActivity extends Activity {
 	public static final int ADD_CONTACTS = 75263847;
 	
 	Event event = null; //event object being edited/created
-	long id = -1; //id of event being edited/created
+	public static long id = -1; //id of event being edited/created
 	
 	DataManager dm;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.editevent_activity);
+		setContentView(R.layout.editevent_main);
 		
 		dm = new DataManager(this.getApplicationContext());
 		
@@ -117,7 +121,62 @@ public class EditEventActivity extends Activity {
 	}
 	
 	public void addParticipant(View view) {
+		boolean isEdit = false;
+		addParticipant(isEdit, null);
+	}
+	
+	private void addParticipant(final boolean isEdit, final EditEventContact contact) {
+		LayoutInflater li = LayoutInflater.from(getBaseContext());
+		View promptsView = li.inflate(R.layout.editevent_dialog, null);
+
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+
+		alertDialogBuilder.setView(promptsView);
+
+		final EditText customName = (EditText) promptsView
+				.findViewById(R.id.customname);
+		final EditText customNumber = (EditText) promptsView
+				.findViewById(R.id.customnumber);
+		customNumber.setRawInputType(Configuration.KEYBOARD_12KEY);
 		
+		if(isEdit) {
+			customName.setText(contact.getName());
+			customNumber.setText(contact.getPhoneNumber());
+		}
+
+		// set dialog message
+		alertDialogBuilder
+			.setCancelable(false)
+			.setPositiveButton("OK",
+			  new DialogInterface.OnClickListener() {
+			    public void onClick(DialogInterface dialog, int id) {
+			    	if(EditEventActivity.id == -1) { //if the event has never been saved, save it so we have an event id
+						event = new Event(eventName.getText().toString(), new Date(), false);
+						EditEventActivity.id = dm.saveEvent(event);
+					}
+			    	Participant person = null;
+			    	if(isEdit) {
+			    		person = new Participant(contact.getId(), EditEventActivity.id, customName.getText().toString(), customNumber.getText().toString(), 0.0);
+			    	}
+			    	else {
+			    		person = new Participant(customName.getText().toString(), EditEventActivity.id, customNumber.getText().toString());
+			    	}
+			    	dm.saveParticipant(person);
+			    	changeParticipantToContact(person);
+			    	adapter = new EditEventAdapterActivity(EditEventActivity.this, R.layout.editevent_list_view_components, listViewContacts);
+					participantsList.setAdapter(adapter);
+					refreshListView();
+			    }
+			  })
+			.setNegativeButton("Cancel",
+			  new DialogInterface.OnClickListener() {
+			    public void onClick(DialogInterface dialog,int id) {
+			    	dialog.cancel();
+			    }
+			  });
+
+		AlertDialog alertDialog = alertDialogBuilder.create();
+		alertDialog.show();
 	}
 	
 	public void addParticipants(View view) {
@@ -174,6 +233,21 @@ public class EditEventActivity extends Activity {
 		}		
 	}
 	
+	private void changeParticipantToContact(Participant person) {
+		if(listViewContacts == null) {
+			listViewContacts = new ArrayList<EditEventContact>();
+		}
+		//check if we're updating a contact or adding a new one
+		for(int i = 0; i < listViewContacts.size(); i++) {
+			if(person.getId() == listViewContacts.get(i).getId()) {
+				listViewContacts.get(i).setName(person.getName());
+				listViewContacts.get(i).setPhoneNumber(person.getPhoneNumber());
+				return;
+			}
+		}
+		listViewContacts.add(new EditEventContact(person.getName(), person.getPhoneNumber(), true, person.getId()));
+	}
+	
 	private void changeContactsToParticipants() {
 		people = new ArrayList<Participant>();
 		for(int i = 0; i < listViewContacts.size(); i++) {
@@ -203,15 +277,14 @@ public class EditEventActivity extends Activity {
 		
         switch(item.getItemId()){
 	        case 0:  //edit
-	            
+	            addParticipant(true, tempContact);
 	            break;
 	        case 1: //delete
 	        	event = dm.getEvent(id); //refresh the locally stored event
-	        	Participant tempParti = event.findParticipant(tempContact.getName(), tempContact.getPhoneNumber());
+	        	event.removeParticipantById(tempContact.getId());
+	        	//Participant tempParti = event.findParticipant(tempContact.getName(), tempContact.getPhoneNumber());
 	        	listViewContacts.remove(tempContact);
-	        	if(tempParti != null) {
-	        		dm.deleteParticipant(tempParti);
-	        	}
+	        	dm.deleteParticipant(tempContact.getId());
 	        	refreshListView();
 	        	break;
 	        default: //cancel

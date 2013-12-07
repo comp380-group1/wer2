@@ -108,6 +108,15 @@ public class Event {
 		}
 		return null;
 	}
+	
+	public void removeParticipantById(long id) {
+		for(int i = 0; i < participants.size(); i++) {
+			if(participants.get(i).getId() == id) {
+				participants.remove(i);
+				return;
+			}
+		}
+	}
 	public String getParticipantsAsString() {
 		String people = "";
 		for(int i = 0; i < participants.size(); i++) {
