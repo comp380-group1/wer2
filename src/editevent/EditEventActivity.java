@@ -81,7 +81,7 @@ public class EditEventActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.editevent_main);
-		
+		id = -1;
 		dm = new DataManager(this.getApplicationContext());
 		
 		eventName = (EditText)findViewById(R.id.eventname);
@@ -97,14 +97,10 @@ public class EditEventActivity extends Activity {
 			hasBeenFinished = true;
 			
 			///////////////////////////////////////////////////////////////////////////
-			//event.addExpense(new Expense(id, "drinks", new Date(), 0.0));
-			Expense expense = new Expense(id, "drinks", new Date(), 0.0);
-			Expense expense2 = new Expense(id, "food", new Date(), 12.76);
-			dm.saveExpense(expense);
-			dm.saveExpense(expense2);
-			
-			
-			
+			//Expense expense = new Expense(id, "drinks", new Date(), 0.0);
+			//Expense expense2 = new Expense(id, "food", new Date(), 12.76);
+			//dm.saveExpense(expense);
+			//dm.saveExpense(expense2);
 			///////////////////////////////////////////////////////////////////////////
 			fetchParticipantsExistingEvent();
 			populateFieldsExistingEvent();
@@ -165,6 +161,7 @@ public class EditEventActivity extends Activity {
 			    	if(EditEventActivity.id == -1) { //if the event has never been saved, save it so we have an event id
 						event = new Event(eventName.getText().toString(), new Date(), false);
 						EditEventActivity.id = dm.saveEvent(event);
+						Log.i("group1", Long.toString(EditEventActivity.id));
 					}
 			    	Participant person = null;
 			    	if(isEdit) {

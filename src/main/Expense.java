@@ -151,6 +151,9 @@ public class Expense {
 	//////////////////////////////////////////////////////////////////////////////
 	
 	
+	
+	public void setAmount(double amount) {	this.amount = amount;	}
+	public void setName(String name) {	this.name = name;	}
 	public String getName() { return name; }
 	public double getAmount() { return amount; }
 	public Participant getParticipant(int i) { return participants.get(i).getParticipant(); }

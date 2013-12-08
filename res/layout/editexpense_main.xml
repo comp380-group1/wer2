@@ -8,32 +8,76 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".EditExpenseActivity" >
 
-    <TextView
+    <EditText
         android:id="@+id/expensename"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="17dp"
-        android:text="Large Text"
+        android:hint="Expense Name"
         android:textAppearance="?android:attr/textAppearanceLarge" />
+    	<requestFocus />
 
     <Button
         android:id="@+id/finish"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="Button" />
+        android:onClick="finished"/>
 
+    <LinearLayout
+        android:id="@+id/headerLL"
+    	android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:orientation="horizontal"
+    	android:layout_below="@+id/expensename" >
+		    <TextView
+		        android:id="@+id/expenseparticipantname"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="1"
+		        android:text="Name" />
+		
+		    <TextView
+		        android:id="@+id/inorout"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="1"
+		        android:text="In/Out" />
+		
+		    <TextView
+		        android:id="@+id/amountpaid"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="1"
+		        android:text="$ Paid" />
+	</LinearLayout>
+
+    <TextView
+        android:id="@+id/expensetotal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_above="@+id/expensetotalnumber"
+        android:text="Expense Total" />
+    
+     <TextView
+        android:id="@+id/expensetotalnumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_above="@+id/finish"/>
+    
     <ListView
         android:id="@+id/expenseparticipantslist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_above="@+id/finish"
-        android:layout_below="@+id/expensename" >
+        android:layout_below="@+id/headerLL"
+        android:layout_above="@+id/expensetotal">
     </ListView>
 
 </RelativeLayout>

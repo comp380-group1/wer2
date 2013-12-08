@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 import editevent.EditEventActivity;
+import eventstatus.EventStatusActivity;
 
 import viewevent.EventActivity;
 import wer.main.R;
@@ -111,7 +112,7 @@ public class MainActivity extends Activity {
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 	    AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
 	    menu.setHeaderTitle(events.get(info.position).getName());
-	    String[] menuItems = {"Edit", "Delete", "Cancel"};
+	    String[] menuItems = {"Status", "Edit", "Delete", "Cancel"};
 	    for (int i = 0; i<menuItems.length; i++) {
 	      menu.add(Menu.NONE, i, i, menuItems[i]);
 	    }
@@ -123,17 +124,23 @@ public class MainActivity extends Activity {
 		Event event = (Event)listview.getAdapter().getItem(info.position);
 		
         switch(item.getItemId()){
-	        case 0:  //edit
-	            Intent intent = new Intent(MainActivity.this, EditEventActivity.class);
-	            intent.putExtra("isForEditing", true);
-	            intent.putExtra("event_id", event.getId());
-	            startActivityForResult(intent, EDIT_EVENT);
+        	case 0: //status
+        		Intent status_intent = new Intent(MainActivity.this, EventStatusActivity.class);
+        		status_intent.putExtra("event_id", event.getId());
+        		startActivity(status_intent);
+        		break;
+	        case 1:  //edit
+	            Intent edit_intent = new Intent(MainActivity.this, EditEventActivity.class);
+	            edit_intent.putExtra("isForEditing", true);
+	            edit_intent.putExtra("event_id", event.getId());
+	            startActivityForResult(edit_intent, EDIT_EVENT);
 	            break;
-	        case 1: //delete
+	        case 2: //delete
 	        	events.remove(event);
 	        	dm.deleteEvent(event);
 	        	try {
 	        		events = dm.getAllEvents();
+	        		loadParticipantsForEachEvent();
 	        	} catch (Exception e) {
 	        		e.printStackTrace();
 	        	}
@@ -161,6 +168,14 @@ public class MainActivity extends Activity {
 			        }
 			        else {
 			        	events.add(event);
+			        	try {
+							events = dm.getAllEvents();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+			        	loadParticipantsForEachEvent();
+			        	adapter = new EventAdapter(this, R.layout.viewevents_list_view_components, events);
+						listview.setAdapter(adapter);
 			        	refreshListView();
 			        }
 				}

@@ -15,5 +15,8 @@
     <string name="title_activity_edit_event_activity">EditEventActivity2</string>
     <string name="title_activity_add_from_contacts">AddFromContactsActivity</string>
     <string name="title_activity_add_contacts_adapter">AddContactsAdapterActivity</string>
+    <string name="title_activity_view_payments">ViewPaymentsActivity</string>
+    <string name="title_activity_event_status">EventStatusActivity</string>
+    <string name="title_activity_reconciled">ReconciledActivity</string>
 
 </resources>

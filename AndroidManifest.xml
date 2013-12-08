@@ -39,7 +39,8 @@
         </activity>
         <activity
             android:name="editexpense.EditExpenseActivity"
-            android:label="@string/title_activity_edit_expense" >
+            android:label="@string/title_activity_edit_expense"
+            android:windowSoftInputMode="adjustPan" >
         </activity>
         <activity
             android:name="contacts.AddFromContactsActivity"
@@ -48,6 +49,18 @@
         <activity
             android:name="contacts.AddContactsAdapterActivity"
             android:label="@string/title_activity_add_contacts_adapter" >
+        </activity>
+        <activity
+            android:name="payments.ViewPaymentsActivity"
+            android:label="@string/title_activity_view_payments" >
+        </activity>
+        <activity
+            android:name="eventstatus.EventStatusActivity"
+            android:label="@string/title_activity_event_status" >
+        </activity>
+        <activity
+            android:name="reconcile.ReconciledActivity"
+            android:label="@string/title_activity_reconciled" >
         </activity>
     </application>
 

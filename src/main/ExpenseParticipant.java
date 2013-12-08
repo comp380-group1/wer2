@@ -53,6 +53,7 @@ public class ExpenseParticipant {
 		this.participantId = participantId;		
 	}
 	
+	public void setParticipant(Participant participant) {	this.participant = participant;	}
 	public void setAmount(double amount) { paid = amount;	}
 	public void updateAmount(double amount) { paid += amount;	}
 	public void setAllottedAmount(double amount) {	allottedAmount = amount;	}

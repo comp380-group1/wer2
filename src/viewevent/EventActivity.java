@@ -2,12 +2,16 @@ package viewevent;
 
 import java.util.List;
 
+import payments.ViewPaymentsActivity;
+import reconcile.ReconciledActivity;
+
 import editevent.EditEventAdapterActivity;
 import editevent.EditEventContact;
 import editexpense.EditExpenseActivity;
 import main.DataManager;
 import main.Event;
 import main.Expense;
+import viewevents.MainActivity;
 import wer.main.R;
 import android.os.Bundle;
 import android.app.Activity;
@@ -22,6 +26,8 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
 
 /**
  * Todo:
@@ -38,6 +44,7 @@ public class EventActivity extends Activity {
 
 	ListView expensesList;
 	Button addExpensesButton;
+	Button viewPaymentsButton;
 	TextView eventName;
 	
 	ViewEventAdapter adapter;
@@ -60,6 +67,7 @@ public class EventActivity extends Activity {
 		
 		expensesList = (ListView)findViewById(R.id.expenselist);
 		addExpensesButton = (Button)findViewById(R.id.addexpense);
+		viewPaymentsButton = (Button)findViewById(R.id.viewpayments);
 		eventName = (TextView)findViewById(R.id.eventname);
 		
 		Intent intent = getIntent();
@@ -68,6 +76,16 @@ public class EventActivity extends Activity {
 			return;
 		}
 		event = dm.getEvent(id);
+		
+		if(!event.isReconciled()) { //disable/enable buttons depending on the status of the event
+			viewPaymentsButton.setText("Reconcile Event");
+			addExpensesButton.setEnabled(true);
+		}
+		else {
+			viewPaymentsButton.setEnabled(true);
+			addExpensesButton.setEnabled(false);
+		}
+		
 		try {
 			listOfExpenses = dm.getExpensesByEventId(id);
 		} catch (Exception e) {
@@ -76,9 +94,27 @@ public class EventActivity extends Activity {
 		
 		eventName.setText(event.getName());
 		
-		adapter = new ViewEventAdapter(this, R.layout.viewevent_list_view_component, listOfExpenses);
+		adapter = new ViewEventAdapter(this, R.layout.viewevent_list_view_components, listOfExpenses);
 		expensesList.setAdapter(adapter);
 		registerForContextMenu(expensesList);
+		
+		expensesList.setOnItemClickListener(new OnItemClickListener() {
+		    @Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		    	Expense tempExpense = (Expense) parent.getItemAtPosition(position);
+		    	if(event.isReconciled()) {
+	        		Toast.makeText(getApplicationContext(), "Reconciled events are not eligible to be edited",
+	        				   4).show();
+	        		return;
+	        	}
+		    	
+		    	Intent intent = new Intent(EventActivity.this, EditExpenseActivity.class);
+		    	intent.putExtra("expense_id", tempExpense.getId());
+		        intent.putExtra("event_id", tempExpense.getEventId());
+		        startActivityForResult(intent, EDIT_EXPENSE);
+		    }
+
+		});
 		
 	}
 
@@ -105,6 +141,11 @@ public class EventActivity extends Activity {
 		
         switch(item.getItemId()){
 	        case 0:  //edit
+	        	if(event.isReconciled()) {
+	        		Toast.makeText(getApplicationContext(), "Reconciled events are not eligible to be edited",
+	        				   4).show();
+	        		break;
+	        	}
 	            Intent intent = new Intent(EventActivity.this, EditExpenseActivity.class);
 	            intent.putExtra("expense_id", tempExpense.getId());
 	            intent.putExtra("event_id", id);
@@ -131,7 +172,7 @@ public class EventActivity extends Activity {
 				if (resultCode == Activity.RESULT_OK) {
 					try {
 						listOfExpenses = dm.getExpensesByEventId(id);
-						adapter = new ViewEventAdapter(this, R.layout.viewevent_list_view_component, listOfExpenses);
+						adapter = new ViewEventAdapter(this, R.layout.viewevent_list_view_components, listOfExpenses);
 						expensesList.setAdapter(adapter);
 						refreshListView();
 					} catch (Exception e) {
@@ -143,7 +184,7 @@ public class EventActivity extends Activity {
 				if(resultCode == Activity.RESULT_OK) {
 					try {
 						listOfExpenses = dm.getExpensesByEventId(id);
-						adapter = new ViewEventAdapter(this, R.layout.viewevent_list_view_component, listOfExpenses);
+						adapter = new ViewEventAdapter(this, R.layout.viewevent_list_view_components, listOfExpenses);
 						expensesList.setAdapter(adapter);
 						refreshListView();
 					} catch(Exception e) {
@@ -164,6 +205,19 @@ public class EventActivity extends Activity {
 		startActivityForResult(intent, ADD_EXPENSE);
 	}
 	
+	public void viewPayments(View view) {
+		if(event.isReconciled()) {
+			Intent intent = new Intent(EventActivity.this, ViewPaymentsActivity.class);
+			intent.putExtra("event_id", id);
+			startActivity(intent);
+		}
+		else {
+			Intent intent = new Intent(EventActivity.this, ReconciledActivity.class);
+			intent.putExtra("event_id", id);
+			startActivity(intent);
+		}
+	}
+	
 	private void refreshListView() {
 		runOnUiThread(new Runnable() {
 	        @Override
@@ -173,6 +227,12 @@ public class EventActivity extends Activity {
 	    });
 		expensesList.invalidate();
 		expensesList.invalidateViews();
+	}
+	
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		dm.close();
 	}
 	
 

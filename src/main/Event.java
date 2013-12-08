@@ -138,6 +138,10 @@ public class Event {
 	public String getParticipantsAsString() {
 		String people = "";
 		for(int i = 0; i < participants.size(); i++) {
+			if((i + 1) == participants.size()) {
+				people += participants.get(i).getName();
+				break;
+			}
 			people += participants.get(i).getName() + ", ";
 		}
 		return people;

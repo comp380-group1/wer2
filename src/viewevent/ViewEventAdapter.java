@@ -55,7 +55,7 @@ public class ViewEventAdapter extends ArrayAdapter<Expense> {
 		
 		expenseName.setText(expense.getName());
 		expenseDate.setText(DataManager.dateToString(expense.getDate()));
-		expenseAmount.setText(Double.toString(expense.getAmount()));
+		expenseAmount.setText("$ " + Double.toString(expense.getAmount()));
 		
 		return alertView;
 		

@@ -17,14 +17,6 @@
         android:layout_marginTop="24dp"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <Button
-        android:id="@+id/addexpense"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:text="Add Expense"
-        android:onClick="addExpense" />
-
     <ListView
         android:id="@+id/expenselist"
         android:layout_width="match_parent"
@@ -34,5 +26,24 @@
         android:layout_above="@+id/addexpense"
         android:layout_below="@+id/eventname" >
     </ListView>
+
+    <Button
+        android:id="@+id/addexpense"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/expenselist"
+        android:layout_above="@+id/viewpayments"
+        android:onClick="addExpense"
+        android:text="Add Expense" />
+    
+    <Button
+        android:id="@+id/viewpayments"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/expenselist"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="17dp"
+        android:onClick="viewPayments" 
+        android:text="View Payments"/>
 
 </RelativeLayout>

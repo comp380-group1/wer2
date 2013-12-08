@@ -14,7 +14,7 @@ import android.util.Log;
 
 public class DataManager extends SQLiteOpenHelper {
 	private final static String DATABASE_NAME = "dbfile";
-	private final static int DATABASE_VERSION = 20;
+	private final static int DATABASE_VERSION = 24;
 	private final static String TAG = "com.group1.wer.DataManager";
 	
 	private final static String TABLE_PARTICIPANTS = "Participants";
@@ -81,6 +81,9 @@ public class DataManager extends SQLiteOpenHelper {
 			event.setParticipants(participants);
 		}
 		
+		cursor.close();
+		db.close();
+		
 		return event;
 	}
 	
@@ -99,7 +102,9 @@ public class DataManager extends SQLiteOpenHelper {
 			Log.i(TAG, "Selecting " + event.toString());	
 			
 			entities.add(event);
-		}		
+		}
+		cursor.close();
+		db.close();
 		return entities;
 	}
 	
@@ -112,7 +117,6 @@ public class DataManager extends SQLiteOpenHelper {
 		} else {
 			id = insertEvent(event);
 		}
-		
 		return id;
 	}
 	
@@ -129,6 +133,7 @@ public class DataManager extends SQLiteOpenHelper {
 		event.setId(id);
 		
 		Log.i(TAG, "Inserted " + event.toString());
+		db.close();
 		return id;
 	}
 	
@@ -144,6 +149,7 @@ public class DataManager extends SQLiteOpenHelper {
 		rowsAffected = db.update(TABLE_EVENTS, updateValues, "id=?", new String[] {Long.toString(event.getId())});
 		
 		Log.i(TAG, "Updated " + event.toString());
+		db.close();
 		return rowsAffected;		
 	}
 
@@ -152,7 +158,6 @@ public class DataManager extends SQLiteOpenHelper {
 		if (event.getId() != -1) {
 			rowsAffected = deleteEvent(event.getId());
 		}
-		
 		return rowsAffected;
 	}	
 	
@@ -167,6 +172,7 @@ public class DataManager extends SQLiteOpenHelper {
 		db.delete(TABLE_EXPENSE_PARTICIPANTS, "eventId=" + eventId, null);
 		
 		Log.i(TAG,"Deleted Event (Id = " + eventId);
+		db.close();
 		return rowsAffected;
 	}
 	
@@ -188,7 +194,8 @@ public class DataManager extends SQLiteOpenHelper {
 	  							  cursor.getDouble(4));
 			Log.i(TAG, "Selecting " + expense.toString());			
 		}
-		
+		cursor.close();
+		db.close();
 		return expense;
 	}
 	
@@ -223,6 +230,8 @@ public class DataManager extends SQLiteOpenHelper {
 
 			entities.add(expense);
 		}		
+		cursor.close();
+		db.close();
 		return entities;
 	}
 	
@@ -253,6 +262,7 @@ public class DataManager extends SQLiteOpenHelper {
 		expense.setId(id);
 		
 		Log.i(TAG, "Inserted " + expense.toString());
+		db.close();
 		return id;
 	}
 	
@@ -270,6 +280,7 @@ public class DataManager extends SQLiteOpenHelper {
 		rowsAffected = db.update(TABLE_EXPENSES, updateValues, "id=?", new String[] {Long.toString(expense.getId())});
 		
 		Log.i(TAG, "Updated " + expense.toString());
+		db.close();
 		return rowsAffected;
 	}
 	
@@ -278,7 +289,6 @@ public class DataManager extends SQLiteOpenHelper {
 		if (expense.getId() != -1) {
 			rowsAffected = deleteExpense(expense.getId());
 		}
-		
 		return rowsAffected;
 	}	
 	
@@ -289,6 +299,7 @@ public class DataManager extends SQLiteOpenHelper {
 		//Delete nested ExpenseParticipants
 		db.delete(TABLE_EXPENSE_PARTICIPANTS, "expenseId=" + expenseId, null);
 		Log.i(TAG,"Deleted Expense (Id = " + expenseId);
+		db.close();
 		return rowsAffected;
 	}
 	
@@ -312,7 +323,8 @@ public class DataManager extends SQLiteOpenHelper {
 													    (cursor.getInt(6) == 0 ? false : true));
 			Log.i(TAG, "Selecting " + expenseParticipant.toString());			
 		}
-		
+		cursor.close();
+		db.close();
 		return expenseParticipant;
 	}	
 	
@@ -339,6 +351,8 @@ public class DataManager extends SQLiteOpenHelper {
 			
 			entities.add(expenseParticipant);
 		}		
+		cursor.close();
+		db.close();
 		return entities;
 	}
 
@@ -365,6 +379,8 @@ public class DataManager extends SQLiteOpenHelper {
 			
 			entities.add(expenseParticipant);
 		}		
+		cursor.close();
+		db.close();
 		return entities;
 	}
 	
@@ -377,7 +393,6 @@ public class DataManager extends SQLiteOpenHelper {
 		} else {
 			id = insertExpenseParticipant(expenseParticipant);
 		}
-		
 		return id;
 	}
 	
@@ -397,6 +412,7 @@ public class DataManager extends SQLiteOpenHelper {
 		expenseParticipant.setId(id);
 		
 		Log.i(TAG, "Inserted " + expenseParticipant.toString());
+		db.close();
 		return id;
 	}
 	
@@ -415,6 +431,7 @@ public class DataManager extends SQLiteOpenHelper {
 		rowsAffected = db.update(TABLE_EXPENSE_PARTICIPANTS, updateValues, "id=?", new String[] {Long.toString(expenseParticipant.getId())});
 		
 		Log.i(TAG, "Updated " + expenseParticipant.toString());
+		db.close();
 		return rowsAffected;		
 	}
 	
@@ -432,6 +449,7 @@ public class DataManager extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		rowsAffected = db.delete(TABLE_EXPENSE_PARTICIPANTS, "id=" + expenseParticipantId,null);
 		Log.i(TAG,"Deleted ExpenseParticipant (Id = " + expenseParticipantId);
+		db.close();
 		return rowsAffected;
 	}
 		
@@ -453,7 +471,8 @@ public class DataManager extends SQLiteOpenHelper {
 										  cursor.getDouble(4));
 			Log.i(TAG, "Selecting " + participant.toString());			
 		}
-		
+		cursor.close();
+		db.close();
 		return participant;
 	}	
 	
@@ -473,6 +492,8 @@ public class DataManager extends SQLiteOpenHelper {
 			
 			entities.add(participant);
 		}		
+		cursor.close();
+		db.close();
 		return entities;
 	}
 	
@@ -496,6 +517,8 @@ public class DataManager extends SQLiteOpenHelper {
 			
 			entities.add(participant);
 		}		
+		cursor.close();
+		db.close();
 		return entities;
 	}
 
@@ -531,6 +554,7 @@ public class DataManager extends SQLiteOpenHelper {
 		rowsAffected = db.update(TABLE_PARTICIPANTS, updateValues, "id=?", new String[] {Long.toString(participant.getId())});
 		
 		Log.i(TAG, "Updated " + participant.toString());
+		db.close();
 		return rowsAffected;		
 	}
 
@@ -548,6 +572,7 @@ public class DataManager extends SQLiteOpenHelper {
 		participant.setId(id);
 		
 		Log.i(TAG, "Inserted " + participant.toString());
+		db.close();
 		return id;
 	}
 
@@ -565,6 +590,7 @@ public class DataManager extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		rowsAffected = db.delete(TABLE_PARTICIPANTS, "id=" + participantId,null);
 		Log.i(TAG,"Deleted Participant (Id = " + participantId);
+		db.close();
 		return rowsAffected;
 	}
 	
@@ -586,7 +612,8 @@ public class DataManager extends SQLiteOpenHelper {
 								  cursor.getDouble(4));
 			Log.i(TAG, "Selecting " + payment.toString());			
 		}
-		
+		cursor.close();
+		db.close();
 		return payment;	
 	}
 	
@@ -610,6 +637,8 @@ public class DataManager extends SQLiteOpenHelper {
 			
 			entities.add(payment);
 		}		
+		cursor.close();
+		db.close();
 		return entities;
 	}	
 
@@ -639,6 +668,7 @@ public class DataManager extends SQLiteOpenHelper {
 		rowsAffected = db.update(TABLE_PAYMENTS, updateValues, "id=?", new String[] {Long.toString(payment.getId())});
 		
 		Log.i(TAG, "Updated " + payment.toString());
+		db.close();
 		return rowsAffected;	
 	}
 	
@@ -656,6 +686,7 @@ public class DataManager extends SQLiteOpenHelper {
 		payment.setId(id);
 		
 		Log.i(TAG, "Inserted " + payment.toString());
+		db.close();
 		return id;
 	}
 	

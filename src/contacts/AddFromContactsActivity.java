@@ -62,7 +62,7 @@ public class AddFromContactsActivity extends Activity {
 		contactsListView.setOnItemClickListener(new OnItemClickListener() {
 		    @Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		    	EditEventContact contact = contacts.get(position);
+		    	EditEventContact contact = (EditEventContact)parent.getItemAtPosition(position);
 		    	contact.changeAlreadyInEventToOpposite();
 		    	adapter.update(contacts);
 		    	contactsListView.invalidate();
