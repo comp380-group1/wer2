@@ -14,7 +14,7 @@ import android.util.Log;
 
 public class DataManager extends SQLiteOpenHelper {
 	private final static String DATABASE_NAME = "dbfile";
-	private final static int DATABASE_VERSION = 19;
+	private final static int DATABASE_VERSION = 20;
 	private final static String TAG = "com.group1.wer.DataManager";
 	
 	private final static String TABLE_PARTICIPANTS = "Participants";
@@ -159,7 +159,13 @@ public class DataManager extends SQLiteOpenHelper {
 	public int deleteEvent(long eventId) {
 		int rowsAffected = 0;
 		SQLiteDatabase db = this.getWritableDatabase();
-		rowsAffected = db.delete(TABLE_EVENTS, "id=" + eventId,null);
+		rowsAffected = db.delete(TABLE_EVENTS, "id=" + eventId, null);
+		
+		//Delete nested Expenses, Participants, ExpenseParticipants
+		db.delete(TABLE_EXPENSES, "eventId=" + eventId, null);
+		db.delete(TABLE_PARTICIPANTS, "eventId=" + eventId, null);
+		db.delete(TABLE_EXPENSE_PARTICIPANTS, "eventId=" + eventId, null);
+		
 		Log.i(TAG,"Deleted Event (Id = " + eventId);
 		return rowsAffected;
 	}
@@ -280,6 +286,8 @@ public class DataManager extends SQLiteOpenHelper {
 		int rowsAffected = 0;
 		SQLiteDatabase db = this.getWritableDatabase();
 		rowsAffected = db.delete(TABLE_EXPENSES, "id=" + expenseId,null);
+		//Delete nested ExpenseParticipants
+		db.delete(TABLE_EXPENSE_PARTICIPANTS, "expenseId=" + expenseId, null);
 		Log.i(TAG,"Deleted Expense (Id = " + expenseId);
 		return rowsAffected;
 	}
@@ -298,9 +306,10 @@ public class DataManager extends SQLiteOpenHelper {
 			expenseParticipant = new ExpenseParticipant(cursor.getLong(0),
 													    cursor.getLong(1),
 													    cursor.getLong(2),
-													    cursor.getDouble(3),
+													    cursor.getLong(3),
 													    cursor.getDouble(4),
-													    (cursor.getInt(5) == 0 ? false : true));
+													    cursor.getDouble(5),
+													    (cursor.getInt(6) == 0 ? false : true));
 			Log.i(TAG, "Selecting " + expenseParticipant.toString());			
 		}
 		
@@ -321,9 +330,10 @@ public class DataManager extends SQLiteOpenHelper {
 			ExpenseParticipant expenseParticipant = new ExpenseParticipant(cursor.getLong(0),
 																	       cursor.getLong(1),
 																	       cursor.getLong(2),
-																	       cursor.getDouble(3),
+																	       cursor.getLong(3),
 																	       cursor.getDouble(4),
-																	       (cursor.getInt(5) == 0 ? false : true));
+																	       cursor.getDouble(5),
+																	       (cursor.getInt(6) == 0 ? false : true));
 			
 			Log.i(TAG, "Selecting " + expenseParticipant.toString());
 			
@@ -346,9 +356,10 @@ public class DataManager extends SQLiteOpenHelper {
 			ExpenseParticipant expenseParticipant = new ExpenseParticipant(cursor.getLong(0),
 																	       cursor.getLong(1),
 																	       cursor.getLong(2),
-																	       cursor.getDouble(3),
+																	       cursor.getLong(3),
 																	       cursor.getDouble(4),
-																	       (cursor.getInt(5) == 0 ? false : true));
+																	       cursor.getDouble(5),
+																	       (cursor.getInt(6) == 0 ? false : true));
 			
 			Log.i(TAG, "Selecting " + expenseParticipant.toString());
 			
@@ -376,6 +387,7 @@ public class DataManager extends SQLiteOpenHelper {
 		ContentValues insertValues = new ContentValues();
 		
 		insertValues.put("eventId", expenseParticipant.getEventId());
+		insertValues.put("expenseId", expenseParticipant.getExpenseId());
 		insertValues.put("participantId", expenseParticipant.getParticipantId());
 		insertValues.put("paid", expenseParticipant.getPaid());
 		insertValues.put("allottedAmount", expenseParticipant.getAllottedAmount());
@@ -394,6 +406,7 @@ public class DataManager extends SQLiteOpenHelper {
 				
 		ContentValues updateValues = new ContentValues();
 		updateValues.put("eventId", expenseParticipant.getEventId());
+		updateValues.put("expenseId", expenseParticipant.getExpenseId());
 		updateValues.put("participantId", expenseParticipant.getParticipantId());
 		updateValues.put("paid", expenseParticipant.getPaid());
 		updateValues.put("allottedAmount", expenseParticipant.getAllottedAmount());
@@ -671,6 +684,7 @@ public class DataManager extends SQLiteOpenHelper {
 		sql = "CREATE TABLE " + TABLE_EXPENSE_PARTICIPANTS + " (" +
 				  "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
 				  "eventId INTEGER, " +
+				  "expenseId INTEGER, " +
 				  "participantId INTEGER, " +
 				  "paid REAL, " +
 				  "allottedAmount REAL, " +
