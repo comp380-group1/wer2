@@ -6,6 +6,7 @@ public class ExpenseParticipant {
 
 	private long id = -1;
 	private long eventId;
+    private long expenseId;
 	private long participantId;
 	private double paid;
 	private double allottedAmount; //used to keep track of how much this participant is paying/needs to be paid (after the per expense split)
@@ -13,17 +14,19 @@ public class ExpenseParticipant {
 	
 	private Participant participant;	
 	
-	public ExpenseParticipant(long id, long eventId, long participantId, double paid, double allottedAmount, boolean participating) {
+	public ExpenseParticipant(long id, long eventId, long expenseId, long participantId, double paid, double allottedAmount, boolean participating) {
 		this.id = id;
 		this.eventId = eventId;
+		this.expenseId = expenseId;
 		this.participantId = participantId;
 		this.paid = paid;
 		this.allottedAmount = allottedAmount;
 		this.participating = participating;
 	}
 	
-	public ExpenseParticipant(long eventId, long participantId, double paid, double allottedAmount, boolean participating) {
+	public ExpenseParticipant(long eventId, long expenseId, long participantId, double paid, double allottedAmount, boolean participating) {
 		this.eventId = eventId;
+		this.expenseId = expenseId;
 		this.participantId = participantId;
 		this.paid = paid;
 		this.allottedAmount = allottedAmount;
@@ -55,7 +58,13 @@ public class ExpenseParticipant {
 	public void setAllottedAmount(double amount) {	allottedAmount = amount;	}
 	public void updateAllottedAmount(double amount) {	allottedAmount += amount;	}
 	public void setParticipating(boolean isParticipating) {	participating = isParticipating;	}
-	
+	public long getExpenseId() {
+		return expenseId;
+	}
+
+	public void setExpenseId(long expenseId) {
+		this.expenseId = expenseId;
+	}
 	public long getId() { return id; }
 	public long getEventId() { return eventId; }
 	public long getParticipantId() { return participantId; }
@@ -67,7 +76,7 @@ public class ExpenseParticipant {
 	public boolean getParticipating() {	return participating;	}
 	
 	public String toString() {
-		return "ExpenseParticipant (id=" + getId() + ",eventId=" + getEventId() + ",participantId=" + getParticipantId() + ",paid=" + getPaid() + ",allottedAmount=" + getAllottedAmount() + ",participating=" + isParticipating() +")";
+		return "ExpenseParticipant (id=" + getId() + ",eventId=" + getEventId() + ",expenseId=" + getExpenseId() + ",participantId=" + getParticipantId() + ",paid=" + getPaid() + ",allottedAmount=" + getAllottedAmount() + ",participating=" + isParticipating() +")";
 	}
 	
 }
