@@ -118,6 +118,15 @@ public class Event {
 		return null;
 	}
 	
+	public void removeExpenseById(long id) {
+		for(int i = 0; i < expenses.size(); i++) {
+			if(expenses.get(i).getId() == id) {
+				expenses.remove(i);
+				return;
+			}
+		}
+	}
+	
 	public void removeParticipantById(long id) {
 		for(int i = 0; i < participants.size(); i++) {
 			if(participants.get(i).getId() == id) {

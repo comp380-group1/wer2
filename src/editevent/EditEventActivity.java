@@ -12,6 +12,7 @@ import wer.main.R;
 
 import main.DataManager;
 import main.Event;
+import main.Expense;
 import main.Participant;
 
 import android.os.Bundle;
@@ -94,6 +95,17 @@ public class EditEventActivity extends Activity {
 			id = intent.getLongExtra("event_id", -1);
 			event = dm.getEvent(id);
 			hasBeenFinished = true;
+			
+			///////////////////////////////////////////////////////////////////////////
+			//event.addExpense(new Expense(id, "drinks", new Date(), 0.0));
+			Expense expense = new Expense(id, "drinks", new Date(), 0.0);
+			Expense expense2 = new Expense(id, "food", new Date(), 12.76);
+			dm.saveExpense(expense);
+			dm.saveExpense(expense2);
+			
+			
+			
+			///////////////////////////////////////////////////////////////////////////
 			fetchParticipantsExistingEvent();
 			populateFieldsExistingEvent();
 		}
@@ -339,59 +351,4 @@ public class EditEventActivity extends Activity {
 		}
 		dm.close();
 	}
-	
-	/*private void fetchContactsExistingEvent() {
-	
-	listViewContacts = new ArrayList<EditEventContact>();
-	
-	Cursor cursor = getContentResolver().query(
-			ContactsContract.CommonDataKinds.Phone.CONTENT_URI, 
-			null, null,null, null);
-	
-	List<Participant> participants = event.getAllParticipants();
-	
-	while (cursor.moveToNext()) {
-		
-		boolean isAlreadyInList = false;
-		
-		String name = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-		String phoneNumber = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-		
-		
-		for(int i = 0; i < participants.size(); i++) {
-			if((name.equals(participants.get(i).getName())) && (phoneNumber.equals(participants.get(i).getPhoneNumber()))) {
-				isAlreadyInList = true;
-				break;
-			}
-		}
-		
-		EditEventContact temp = new EditEventContact(name, phoneNumber, isAlreadyInList);
-		listViewContacts.add(temp);
-		
-	}
-	
-	adapter = new EditEventAdapterActivity(this, R.layout.editevent_list_view_components, listViewContacts);
-	participantsList.setAdapter(adapter);
-}*/
-	
-	/*private void fetchContactsNewEvent() {
-	listViewContacts = new ArrayList<EditEventContact>();
-	
-	Cursor cursor = getContentResolver().query(
-			ContactsContract.CommonDataKinds.Phone.CONTENT_URI, 
-			null, null,null, null);
-	
-	while (cursor.moveToNext()) {			
-		String name = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-		String phoneNumber = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-		
-		EditEventContact temp = new EditEventContact(name, phoneNumber, false);
-		listViewContacts.add(temp);
-		
-	}
-	
-	adapter = new EditEventAdapterActivity(this, R.layout.editevent_list_view_components, listViewContacts);
-	participantsList.setAdapter(adapter);
-}*/
-
 }

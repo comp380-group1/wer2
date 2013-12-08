@@ -71,6 +71,7 @@ public class MainActivity extends Activity {
 		
 		try {
 			events = dm.getAllEvents();
+			loadParticipantsForEachEvent();
 		} catch(Exception e) {
 			Log.i("ERROR", "Couldn't load events - MainActivity");
 		}
@@ -91,7 +92,7 @@ public class MainActivity extends Activity {
 		    	
 		    	Intent intent = new Intent(MainActivity.this, EventActivity.class);
 		    	long eventID = event.getId();
-		    	intent.putExtra("id", eventID);
+		    	intent.putExtra("event_id", eventID);
 		    	startActivity(intent);
 		    }
 
@@ -167,7 +168,8 @@ public class MainActivity extends Activity {
 			case EDIT_EVENT:
 				if(resultCode == Activity.RESULT_OK) {
 					try {
-						events = dm.getAllEvents();  //because we freakin can
+						events = dm.getAllEvents(); //because we freakin can
+						loadParticipantsForEachEvent();
 					} catch(Exception e) {
 						Log.i("ERROR", "Couldn't load events - MainActivity");
 					}
@@ -191,6 +193,16 @@ public class MainActivity extends Activity {
 		adapter.update(events);
 		adapter.notifyDataSetChanged();
     	listview.invalidate();
+	}
+	
+	private void loadParticipantsForEachEvent() {
+		for(int i = 0; i < events.size(); i++) {
+			try {
+				events.get(i).setParticipants(dm.getParticipantsByEventId(events.get(i).getId()));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	@Override

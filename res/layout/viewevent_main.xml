@@ -14,13 +14,25 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="24dp"
         android:textAppearance="?android:attr/textAppearanceLarge" />
-    
+
+    <Button
+        android:id="@+id/addexpense"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="Add Expense"
+        android:onClick="addExpense" />
+
     <ListView
-    	android:layout_width="fill_parent"
-    	android:layout_height="fill_parent"
-    	android:layout_alignTop="@+id/eventname"
-    	android:id="@+id/participantslist" />
+        android:id="@+id/expenselist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_above="@+id/addexpense"
+        android:layout_below="@+id/eventname" >
+    </ListView>
 
 </RelativeLayout>
