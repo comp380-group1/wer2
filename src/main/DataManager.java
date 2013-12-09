@@ -14,7 +14,7 @@ import android.util.Log;
 
 public class DataManager extends SQLiteOpenHelper {
 	private final static String DATABASE_NAME = "dbfile";
-	private final static int DATABASE_VERSION = 25;
+	private final static int DATABASE_VERSION = 26;
 	private final static String TAG = "com.group1.wer.DataManager";
 	
 	private final static String TABLE_PARTICIPANTS = "Participants";
@@ -618,7 +618,8 @@ public class DataManager extends SQLiteOpenHelper {
 								  cursor.getLong(1),
 								  cursor.getString(2),
 								  cursor.getString(3),
-								  cursor.getDouble(4));
+								  cursor.getDouble(4),
+								  cursor.getString(5));
 			Log.i(TAG, "Selecting " + payment.toString());			
 		}
 		cursor.close();
@@ -641,7 +642,8 @@ public class DataManager extends SQLiteOpenHelper {
 					  cursor.getLong(1),
 					  cursor.getString(2),
 					  cursor.getString(3),
-					  cursor.getDouble(4));
+					  cursor.getDouble(4),
+					  cursor.getString(5));
 			Log.i(TAG, "Selecting " + payment.toString());
 			
 			entities.add(payment);
@@ -673,6 +675,7 @@ public class DataManager extends SQLiteOpenHelper {
 		updateValues.put("toName", payment.getTo());
 		updateValues.put("fromName", payment.getFrom());
 		updateValues.put("amount", payment.getAmount());
+		updateValues.put("toPhoneNumber", payment.getToPhoneNumber());
 		
 		rowsAffected = db.update(TABLE_PAYMENTS, updateValues, "id=?", new String[] {Long.toString(payment.getId())});
 		
@@ -690,6 +693,7 @@ public class DataManager extends SQLiteOpenHelper {
 		insertValues.put("toName", payment.getTo());
 		insertValues.put("fromName", payment.getFrom());
 		insertValues.put("amount", payment.getAmount());
+		insertValues.put("toPhoneNumber", payment.getToPhoneNumber());
 		
 		id = db.insert(TABLE_PAYMENTS, null, insertValues);		
 		payment.setId(id);
@@ -746,7 +750,8 @@ public class DataManager extends SQLiteOpenHelper {
 			  "eventId INTEGER, " +
 			  "toName TEXT, " +
 			  "fromName TEXT, " +
-			  "amount REAL)";
+			  "amount REAL, " +
+			  "toPhoneNumber TEXT)";
 		db.execSQL(sql);
 	}
 

@@ -7,20 +7,25 @@ public class Payment implements Comparable<Payment> {
 	private String to;
 	private String from;
 	private double amount;
+	private String toPhoneNumber;
 	
-	public Payment(long id, long eventId, String to, String from, double amount) {
+
+
+	public Payment(long id, long eventId, String to, String from, double amount, String toPhoneNumber) {
 		this.id = id;
 		this.eventId = eventId;
 		this.to = to;
 		this.from = from;
 		this.amount = amount;
+		this.toPhoneNumber = toPhoneNumber;
 	}
 	
-	public Payment(long eventId, String to, String from, double amount) {
+	public Payment(long eventId, String to, String from, double amount, String toPhoneNumber) {
 		this.eventId = eventId;
 		this.to = to;
 		this.from = from;
 		this.amount = amount;
+		this.toPhoneNumber = toPhoneNumber;
 	}
 	
 	public Payment(String to, String from, double amount) {
@@ -48,8 +53,16 @@ public class Payment implements Comparable<Payment> {
 	public String getFrom() { return from; }
 	public double getAmount() { return amount; }
 	
+	public String getToPhoneNumber() {
+		return toPhoneNumber;
+	}
+
+	public void setToPhoneNumber(String toPhoneNumber) {
+		this.toPhoneNumber = toPhoneNumber;
+	}
+	
 	public String toString() {
-		return "Payment (id=" + getId() + ",eventId=" + getEventId() + ",to=" + getTo() + ",from=" + getFrom() + ",amount=" + getAmount() + ")";
+		return "Payment (id=" + getId() + ",eventId=" + getEventId() + ",to=" + getTo() + ",from=" + getFrom() + ",amount=" + getAmount() + ",toPhoneNumber=" + getToPhoneNumber() + ")";
 	}
 	
 }
