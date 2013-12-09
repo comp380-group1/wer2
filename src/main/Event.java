@@ -45,14 +45,6 @@ public class Event {
 		}
 		
 	}
-	public void removeParticipant(Participant toBeRemoved) { 
-		
-		for(int i = 0; i < expenses.size(); i++) {
-			expenses.get(i).removeParticipant(toBeRemoved); //check if we want this functionality
-		}
-		participants.remove(toBeRemoved);
-		
-	}
 	
 	public void addExpense(Expense newExpense) {
 		newExpense.setEventId(this.id);

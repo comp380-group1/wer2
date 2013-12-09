@@ -13,6 +13,7 @@ import wer.main.R;
 import main.DataManager;
 import main.Event;
 import main.Expense;
+import main.ExpenseParticipant;
 import main.Participant;
 
 import android.os.Bundle;
@@ -164,13 +165,26 @@ public class EditEventActivity extends Activity {
 						Log.i("group1", Long.toString(EditEventActivity.id));
 					}
 			    	Participant person = null;
+			    	List<Expense> expenses = null;
+		    		try {
+		    			expenses = dm.getExpensesByEventId(EditEventActivity.id);
+		    		} catch (Exception e) {
+		    			e.printStackTrace();
+		    		}
+		    		
 			    	if(isEdit) {
 			    		person = new Participant(contact.getId(), EditEventActivity.id, customName.getText().toString(), customNumber.getText().toString(), 0.0);
+			    		dm.saveParticipant(person);
 			    	}
 			    	else {
 			    		person = new Participant(customName.getText().toString(), EditEventActivity.id, customNumber.getText().toString());
+			    		long participantId = dm.saveParticipant(person);
+			    		if(expenses != null) {
+							for(int i = 0; i < expenses.size(); i++) {
+								dm.saveExpenseParticipant(new ExpenseParticipant(id, expenses.get(i).getId(), participantId, 0.0, 0.0, false));
+							}
+						}
 			    	}
-			    	dm.saveParticipant(person);
 			    	changeParticipantToContact(person);
 			    	adapter = new EditEventAdapterActivity(EditEventActivity.this, R.layout.editevent_list_view_components, listViewContacts);
 					participantsList.setAdapter(adapter);
@@ -290,9 +304,29 @@ public class EditEventActivity extends Activity {
 	            break;
 	        case 1: //delete
 	        	event = dm.getEvent(id); //refresh the locally stored event
+	        	//check to see if the participant is participating in any expenses
+	        	//if they are, they can't be deleted until those dependencies are removed
+	        	try {
+	        		List<Expense> expenses = dm.getExpensesByEventId(id);
+	        		for(int i = 0; i < expenses.size(); i++) { //initial search to see if the participant has participating dependencies
+	        			if(expenses.get(i).isParticipantParticipating(tempContact.getId())) {
+	        				Toast.makeText(getApplicationContext(), "Remove expense dependencies before deleting", 4).show();
+	        				return true;
+	        			}
+	        		}
+	        		/*ExpenseParticipant ep;
+	        		for(int i = 0; i < expenses.size(); i++) { //second search to actually remove the participant because there are no dependencies
+	        			ep = expenses.get(i).returnAndRemoveParticipantById(tempContact.getId());
+	        			if(ep != null) {
+	        				dm.deleteExpenseParticipant(ep);
+	        			}
+	        		}*/
+	        	} catch (Exception e) {
+	        		e.printStackTrace();
+	        	}
 	        	event.removeParticipantById(tempContact.getId());
-	        	//Participant tempParti = event.findParticipant(tempContact.getName(), tempContact.getPhoneNumber());
 	        	listViewContacts.remove(tempContact);
+	        	dm.deleteExpenseParticipantByParticipantId(tempContact.getId());
 	        	dm.deleteParticipant(tempContact.getId());
 	        	refreshListView();
 	        	break;
@@ -313,9 +347,7 @@ public class EditEventActivity extends Activity {
 					try {
 						people = dm.getParticipantsByEventId(id);
 						changeParticipantsToContacts(people);
-						//if(adapter == null) {
-							adapter = new EditEventAdapterActivity(this, R.layout.editevent_list_view_components, listViewContacts);
-						//}
+						adapter = new EditEventAdapterActivity(this, R.layout.editevent_list_view_components, listViewContacts);
 						participantsList.setAdapter(adapter);
 						refreshListView();
 					} catch (Exception e) {

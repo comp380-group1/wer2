@@ -63,7 +63,7 @@ public class AddContactsAdapterActivity extends ArrayAdapter<EditEventContact> {
 		number.setText(contact.getPhoneNumber());
 		
 		if(contact.isAlreadyInEvent()) {
-			alertView.setBackgroundColor(Color.GREEN);
+			alertView.setBackgroundColor(Color.parseColor("#3BA81D"));
 		}
 		else {
 			alertView.setBackgroundColor(Color.WHITE);

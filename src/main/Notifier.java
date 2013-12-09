@@ -6,9 +6,7 @@ import android.telephony.SmsManager;
 
 public class Notifier {
 	
-	public static void notifyParticipants(Event event) {
-		
-		List<Payment> payments = event.getAllPayments();
+	public static void notifyParticipants(List<Payment> payments) {
 		
 		Participant payer;
 		String payerName, payeeName;
@@ -18,10 +16,11 @@ public class Notifier {
 			payeeName = payments.get(i).getTo();
 			amount = payments.get(i).getAmount();
 			
-			payer = event.getParticipant(payerName);
+			//payer = event.getParticipant(payerName);
 			
 			SmsManager sms = SmsManager.getDefault();
-	        sms.sendTextMessage(payer.getPhoneNumber(), null, "You owe " + payeeName + " $" + amount + ".", null, null);
+	        //sms.sendTextMessage(payer.getPhoneNumber(), null, "You owe " + payeeName + " $" + amount + ".", null, null);
+	        //might have to and from switched, have to check on that
 		}
 		
 	}

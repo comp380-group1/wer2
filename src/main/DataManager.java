@@ -14,7 +14,7 @@ import android.util.Log;
 
 public class DataManager extends SQLiteOpenHelper {
 	private final static String DATABASE_NAME = "dbfile";
-	private final static int DATABASE_VERSION = 24;
+	private final static int DATABASE_VERSION = 25;
 	private final static String TAG = "com.group1.wer.DataManager";
 	
 	private final static String TABLE_PARTICIPANTS = "Participants";
@@ -449,6 +449,15 @@ public class DataManager extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		rowsAffected = db.delete(TABLE_EXPENSE_PARTICIPANTS, "id=" + expenseParticipantId,null);
 		Log.i(TAG,"Deleted ExpenseParticipant (Id = " + expenseParticipantId);
+		db.close();
+		return rowsAffected;
+	}
+	
+	public int deleteExpenseParticipantByParticipantId(long participantId) {
+		int rowsAffected = 0;
+		SQLiteDatabase db = this.getWritableDatabase();
+		rowsAffected = db.delete(TABLE_EXPENSE_PARTICIPANTS, "participantId=" + participantId,null);
+		Log.i(TAG,"Deleted ExpenseParticipant (Id = " + participantId);
 		db.close();
 		return rowsAffected;
 	}

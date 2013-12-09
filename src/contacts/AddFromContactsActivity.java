@@ -5,6 +5,8 @@ import java.util.List;
 
 import main.DataManager;
 import main.Event;
+import main.Expense;
+import main.ExpenseParticipant;
 import main.Participant;
 
 import editevent.EditEventAdapterActivity;
@@ -108,11 +110,22 @@ public class AddFromContactsActivity extends Activity {
 	}
 	
 	public void addContacts(View view) {
+		List<Expense> expenses = null;
+		try {
+			expenses = dm.getExpensesByEventId(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		for(int i = 0; i < contacts.size(); i++) {
 			EditEventContact contact = contacts.get(i);
-			if(contact.isAlreadyInEvent()) {
+			if(contact.isAlreadyInEvent()) { //they are highlighted green, meaning the user wants them in the event
 				Participant person = new Participant(contact.getName(), id, contact.getPhoneNumber());
-				dm.saveParticipant(person);
+				long participantId = dm.saveParticipant(person);
+				if(expenses != null) {
+					for(int k = 0; k < expenses.size(); k++) {
+						dm.saveExpenseParticipant(new ExpenseParticipant(id, expenses.get(k).getId(), participantId, 0.0, 0.0, false));
+					}
+				}
 			}
 		}
 		Intent resultIntent = new Intent();
@@ -121,38 +134,5 @@ public class AddFromContactsActivity extends Activity {
 		dm.close();
 		finish();
 	}
-	
-	/*private void fetchContactsNewEvent() {
-		listViewContacts = new ArrayList<EditEventContact>();
-		
-		Cursor cursor = getContentResolver().query(
-				ContactsContract.CommonDataKinds.Phone.CONTENT_URI, 
-				null, null,null, null);
-		
-		while (cursor.moveToNext()) {			
-			String name = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-			String phoneNumber = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-			
-			EditEventContact temp = new EditEventContact(name, phoneNumber, false);
-			listViewContacts.add(temp);
-			
-		}
-		
-		adapter = new EditEventAdapterActivity(this, R.layout.editevent_list_view_components, listViewContacts);
-		participantsList.setAdapter(adapter);
-	}
-	
-	private void changeContactsToParticipants() {
-		
-		people = new ArrayList<Participant>();
-		for(int i = 0; i < listViewContacts.size(); i++) {
-			EditEventContact temp = listViewContacts.get(i);
-			if(temp.isAlreadyInEvent()) {
-				Participant participant = new Participant(temp.getName(), id, temp.getPhoneNumber(), 0.0);
-				dm.saveParticipant(participant);
-				people.add(participant);
-			}
-		}
-	}*/
 
 }

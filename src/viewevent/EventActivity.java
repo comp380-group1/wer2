@@ -1,16 +1,19 @@
 package viewevent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import payments.ViewPaymentsActivity;
-import reconcile.ReconciledActivity;
-
 import editevent.EditEventAdapterActivity;
 import editevent.EditEventContact;
 import editexpense.EditExpenseActivity;
 import main.DataManager;
 import main.Event;
 import main.Expense;
+import main.ExpenseParticipant;
+import main.Participant;
+import main.Payment;
+import main.Reconciler;
 import viewevents.MainActivity;
 import wer.main.R;
 import android.os.Bundle;
@@ -50,7 +53,7 @@ public class EventActivity extends Activity {
 	ViewEventAdapter adapter;
 	
 	Event event = null;
-	List<Expense> listOfExpenses;
+	List<Expense> listOfExpenses = null;
 	long id = -1;
 	
 	DataManager dm;
@@ -103,7 +106,7 @@ public class EventActivity extends Activity {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		    	Expense tempExpense = (Expense) parent.getItemAtPosition(position);
 		    	if(event.isReconciled()) {
-	        		Toast.makeText(getApplicationContext(), "Reconciled events are not eligible to be edited",
+	        		Toast.makeText(getApplicationContext(), "Cannot edit reconciled expenses",
 	        				   4).show();
 	        		return;
 	        	}
@@ -142,7 +145,7 @@ public class EventActivity extends Activity {
         switch(item.getItemId()){
 	        case 0:  //edit
 	        	if(event.isReconciled()) {
-	        		Toast.makeText(getApplicationContext(), "Reconciled events are not eligible to be edited",
+	        		Toast.makeText(getApplicationContext(), "Cannot edit reconciled expenses",
 	        				   4).show();
 	        		break;
 	        	}
@@ -152,7 +155,27 @@ public class EventActivity extends Activity {
 	            startActivityForResult(intent, EDIT_EXPENSE);
 	            break;
 	        case 1: //delete
+	        	if(event.isReconciled()) {
+	        		Toast.makeText(getApplicationContext(), "Cannot delete reconciled expenses",
+	        				   4).show();
+	        		break;
+	        	}
 	        	event = dm.getEvent(id); //refresh the locally stored event
+	        	//update participant's current balance
+	        	List<ExpenseParticipant> epList = null;
+	        	try {
+	        		epList = dm.getExpenseParticipantsByExpenseId(tempExpense.getId());
+	        	} catch (Exception e) {
+	        		e.printStackTrace();
+	        	}
+	        	if(epList != null) {
+	        		for(int i = 0; i < epList.size(); i++) {
+	        			Participant participant = dm.getParticipant(epList.get(i).getParticipantId());
+	        			participant.updateBalance(-epList.get(i).getAllottedAmount());
+	        			dm.saveParticipant(participant);
+	        		}
+	        	}
+	        	
 	        	event.removeExpenseById(tempExpense.getId());
 	        	listOfExpenses.remove(tempExpense);
 	        	dm.deleteExpense(tempExpense);
@@ -206,14 +229,37 @@ public class EventActivity extends Activity {
 	}
 	
 	public void viewPayments(View view) {
+		if(listOfExpenses == null) {
+			Toast.makeText(getApplicationContext(), "No expenses to be reconciled", 4).show();
+			return;
+		}
 		if(event.isReconciled()) {
 			Intent intent = new Intent(EventActivity.this, ViewPaymentsActivity.class);
 			intent.putExtra("event_id", id);
+			intent.putExtra("disableSMSButton", true);
 			startActivity(intent);
 		}
 		else {
-			Intent intent = new Intent(EventActivity.this, ReconciledActivity.class);
+			//reconcile here
+			List<Participant> participants = null;
+			try {
+				participants = dm.getParticipantsByEventId(id);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			List<Payment> payments = null;
+			if(participants != null) {
+				payments = new ArrayList<Payment>();
+				Reconciler.reconcile(participants, payments);
+				//save payments
+				for(int i = 0; i < payments.size(); i++) {
+					dm.savePayment(new Payment(id, payments.get(i).getTo(), payments.get(i).getFrom(), payments.get(i).getAmount()));
+				}
+			}
+			
+			Intent intent = new Intent(EventActivity.this, ViewPaymentsActivity.class);
 			intent.putExtra("event_id", id);
+			intent.putExtra("disableSMSButton", false);
 			startActivity(intent);
 		}
 	}
@@ -227,6 +273,16 @@ public class EventActivity extends Activity {
 	    });
 		expensesList.invalidate();
 		expensesList.invalidateViews();
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		event = dm.getEvent(id);
+		if(event.isReconciled()) {
+			viewPaymentsButton.setText("View Payments");
+			addExpensesButton.setEnabled(false);
+		}
 	}
 	
 	@Override

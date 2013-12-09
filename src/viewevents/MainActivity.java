@@ -130,6 +130,11 @@ public class MainActivity extends Activity {
         		startActivity(status_intent);
         		break;
 	        case 1:  //edit
+	        	if(event.isReconciled()) {
+	        		Toast.makeText(getApplicationContext(), "Reconciled events are not eligible to be edited",
+	        				   4).show();
+	        		break;
+	        	}
 	            Intent edit_intent = new Intent(MainActivity.this, EditEventActivity.class);
 	            edit_intent.putExtra("isForEditing", true);
 	            edit_intent.putExtra("event_id", event.getId());
@@ -154,6 +159,19 @@ public class MainActivity extends Activity {
         
         return true;
         
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		try {
+			events = dm.getAllEvents();
+			loadParticipantsForEachEvent();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		adapter = new EventAdapter(this, R.layout.viewevents_list_view_components, events);
+		listview.setAdapter(adapter);
 	}
 	
 	@Override

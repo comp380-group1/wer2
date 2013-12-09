@@ -65,9 +65,13 @@ public class Expense {
 		
 	}
 	
-	/* Need to implement this method.  Needs to check and see who the participant owes */
-	public void removeParticipant(Participant toBeRemoved) {
-		
+	public boolean isParticipantParticipating(long id) {
+		for(int i = 0; i < participants.size(); i++) {
+			if(id == participants.get(i).getParticipantId() && participants.get(i).isParticipating()) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	/**
@@ -87,54 +91,6 @@ public class Expense {
 		participants.get(index).setAllottedAmount(-amount);
 	}
 	
-	public void onClose() {
-		//add up total amount that each participant paid
-		double tempAmount = 0.0;
-		for(int i = 0; i < participants.size(); i++) {
-			tempAmount += Math.abs(participants.get(i).getAmount());
-		}
-		amount = tempAmount;
-		
-		int in = numberInOrOut(); //number of people participating in this expense
-		if(in == 0) //if no one is participating, quit without doing anything
-			return;
-		int isEvenSplit = (int) ((100 * amount) % in); //number of remaining cents left over after dividing the cost among the participants
-		double evenDistributionAmount = (amount - (isEvenSplit / 100.0)) / in; //amount that all participants need to evenly pay (subtracting the odd number of cents)
-		
-		if(isEvenSplit != 0) { //only if there are additional cents to be given to someone
-			List<Boolean> penniesLeftOver = new ArrayList<Boolean>(participants.size()); 
-			penniesLeftOver = copyBooleans(penniesLeftOver); //copy the list of booleans determining if people are taking part in this expense
-			Random random = new Random();
-			while(isEvenSplit > 0) {
-				//int number = 0;
-				int number = random.nextInt(participants.size());
-				if(penniesLeftOver.get(number)) {
-					//amountPaid.set(number, amountPaid.get(number) + .01);
-					participants.get(number).getParticipant().updateBalance(.01);
-					participants.get(number).updateAllottedAmount(.01);
-					penniesLeftOver.set(number, true);
-					isEvenSplit--;
-				}
-			}
-		}
-		for(int i = 0; i < participants.size(); i++) {
-			if(participants.get(i).isParticipating()) {
-				participants.get(i).getParticipant().updateBalance(participants.get(i).getAmount() + evenDistributionAmount);
-				participants.get(i).updateAllottedAmount(evenDistributionAmount);
-			}
-		}
-	}
-	
-	private int numberInOrOut() {
-		int in = 0;
-		for(int i = 0; i < participants.size(); i++) {
-			if(participants.get(i).isParticipating()) {
-				in++;
-			}
-		}
-		return in;
-	}
-	
 	private void subtractPreviousBalance() {
 		
 		for(int i = 0; i < participants.size(); i++) {
@@ -145,6 +101,17 @@ public class Expense {
 			
 		}
 		
+	}
+	
+	public ExpenseParticipant returnAndRemoveParticipantById(long id) {
+		ExpenseParticipant temp = null;
+		for(int i = 0; i < participants.size(); i++) {
+			if(participants.get(i).getId() == id) {
+				temp = participants.get(i);
+				participants.remove(i);
+			}
+		}
+		return temp;
 	}
 	
 	
@@ -186,14 +153,6 @@ public class Expense {
 	
 	
 	/////////////////////////////////////////////////////////////////////////////
-	
-	private List copyBooleans(List<Boolean> temp) {
-		for(int i = 0; i < participants.size(); i++) {
-			temp.add(participants.get(i).isParticipating());
-		}
-		return temp;
-	}
-
 	public long getId() {
 		return id;
 	}
