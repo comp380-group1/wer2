@@ -30,28 +30,6 @@ public class Event {
 		this.isNotified = isNotified;
 	}
 	
-	public void addParticipant(Participant newParticipant) { 
-		
-		participants.add(newParticipant); 
-		for(int i = 0; i < expenses.size(); i++) {
-			expenses.get(i).addNewParticipant(newParticipant);
-		}
-		
-	}
-	
-	public void addExpense(Expense newExpense) {
-		newExpense.setEventId(this.id);
-		expenses.add(newExpense);
-	}
-	
-	public void reconcile() {
-		payments = new ArrayList<Payment>();
-		Reconciler.reconcile(this.getAllParticipants(), payments);
-		isReconciled = true;
-		
-	}
-	
-	
 	///////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////
 	
@@ -86,7 +64,6 @@ public class Event {
 	public long getId() {	return id;	}
 	public String getName() { return name; }
 	public Date getDate() { return date; }
-	//public boolean getIsReconciled() {	return isReconciled;	}
 	public boolean isReconciled() {	return isReconciled; }
 	public boolean isNotified() { return isNotified; }
 	public String getEventName() { return name; }
@@ -131,16 +108,6 @@ public class Event {
 			people += participants.get(i).getName() + ", ";
 		}
 		return people;
-	}
-	
-	public Participant findParticipant(String name, String number) {
-		for(int i = 0; i < participants.size(); i++) {
-			if(participants.get(i).getName().equals(name) &&
-					participants.get(i).getPhoneNumber().equals(number)) {
-				return participants.get(i);
-			}
-		}
-		return null;
 	}
 
 	public String toString() {

@@ -22,8 +22,6 @@ public class Notifier {
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
-			
-	        //might have to and from switched, have to check on that
 		}
 		
 	}

@@ -25,14 +25,6 @@ public class Expense {
 	
 	private Event event;
 	private List<ExpenseParticipant> participants = new ArrayList<ExpenseParticipant>();
-	
-	public List<ExpenseParticipant> getParticipants() {
-		return participants;
-	}
-
-	public void setParticipants(List<ExpenseParticipant> participants) {
-		this.participants = participants;
-	}
 
 	public Expense(long id, long eventId, String name, Date date, double amount) {
 		this.setId(id);
@@ -49,20 +41,12 @@ public class Expense {
 		this.amount = amount;
 	}
 	
-	public Expense(Event event, String name) {
-		
-		this.name = name;
-		this.amount = 0.0;
-		
-		for(int i = 0; i < event.getAllParticipants().size(); i++) {
-			participants.add(new ExpenseParticipant(event.getParticipant(i), 0.0, true));
-		}
+	public List<ExpenseParticipant> getParticipants() {
+		return participants;
 	}
-	
-	public void addNewParticipant(Participant newParticipant) {
-		
-		participants.add(new ExpenseParticipant(newParticipant, 0.0, false));
-		
+
+	public void setParticipants(List<ExpenseParticipant> participants) {
+		this.participants = participants;
 	}
 	
 	public boolean isParticipantParticipating(long id) {
@@ -72,35 +56,6 @@ public class Expense {
 			}
 		}
 		return false;
-	}
-	
-	/**
-	 * Updates the amount that the participant is paying.
-	 * @param index Index of participant being updated
-	 * @param amount New balance for this participant
-	 */
-	public void setAmountPaid(int index, double amount) {
-		
-		double previousBalanceAtIndex = participants.get(index).getAmount();
-		double newAmount = amount - previousBalanceAtIndex;
-		
-		subtractPreviousBalance();
-		
-		participants.get(index).setAmount(-amount); //negative = owed this amount of money
-		participants.get(index).setParticipating(true); //if the person tries to chip in money, automatically add them to be participating (really only for the times when a person defaults to not being in and tries to pay)
-		participants.get(index).setAllottedAmount(-amount);
-	}
-	
-	private void subtractPreviousBalance() {
-		
-		for(int i = 0; i < participants.size(); i++) {
-			
-			double amount = participants.get(i).getAllottedAmount();
-			participants.get(i).getParticipant().updateBalance(-amount);
-			participants.get(i).setAllottedAmount(0.0); //fresh slate, ready for the new amount
-			
-		}
-		
 	}
 	
 	public ExpenseParticipant returnAndRemoveParticipantById(long id) {
@@ -132,27 +87,8 @@ public class Expense {
 		}
 		
 		return temp; 
-	}
-	public double getAmountPaid(int i) { return participants.get(i).getAmount(); }
-	public List getAllAmountPaid() { 
-		List<Double> temp = new ArrayList<Double>();
-		for(int i = 0; i < participants.size(); i++) {
-			temp.add(participants.get(i).getAmount());
-		}
-		return temp;
-	}
-	public boolean getInOrOut(int i) { return participants.get(i).isParticipating(); }
-	public List getAllInOrOut() { 
-		
-		List<Boolean> temp = new ArrayList<Boolean>();
-		for(int i = 0; i < participants.size(); i++) {
-			temp.add(participants.get(i).isParticipating());
-		}
-		return temp;
-	}
-	
-	
-	/////////////////////////////////////////////////////////////////////////////
+	}	
+
 	public long getId() {
 		return id;
 	}

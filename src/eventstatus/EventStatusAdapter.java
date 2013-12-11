@@ -25,8 +25,6 @@ public class EventStatusAdapter extends ArrayAdapter<Participant> {
 	public EventStatusAdapter(Context context, int resource, List<Participant> objects) {
 		super(context, resource, objects);
 		this.resource = resource;
-		
-		
 	}
 
 	@Override

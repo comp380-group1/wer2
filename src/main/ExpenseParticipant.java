@@ -33,14 +33,6 @@ public class ExpenseParticipant {
 		this.participating = participating;
 	}
 	
-	public ExpenseParticipant(Participant participant, double paid, boolean participating) {		
-		this.participant = participant;
-		this.paid = paid;
-		this.allottedAmount = 0.0;
-		this.participating = participating;
-		
-	}
-	
 	public void setId(long id) {
 		this.id = id;		
 	}
