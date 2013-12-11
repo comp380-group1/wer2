@@ -608,7 +608,7 @@ public class DataManager extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getReadableDatabase();
 		
 		Cursor cursor = db.query(TABLE_PAYMENTS,
-				 new String[] {"id", "eventId", "toName", "fromName", "amount"}, 
+				 null, 
 				 "id=?",
 				 new String[] {Long.toString(id)},
 				 null, null, null);
@@ -632,7 +632,7 @@ public class DataManager extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getReadableDatabase();
 		
 		Cursor cursor = db.query(TABLE_PAYMENTS,
-				 new String[] {"id", "eventId", "toName", "fromName", "amount"}, 
+				 null, 
 				 "eventId=?",
 				 new String[] {Long.toString(eventId)},
 				 null, null, null);
