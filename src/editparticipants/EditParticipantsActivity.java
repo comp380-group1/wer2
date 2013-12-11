@@ -160,7 +160,7 @@ public class EditParticipantsActivity extends Activity {
 			  new DialogInterface.OnClickListener() {
 			    public void onClick(DialogInterface dialog, int id) {
 			    	if(EditParticipantsActivity.id == -1) { //if the event has never been saved, save it so we have an event id
-						event = new Event(eventName.getText().toString(), new Date(), false);
+						event = new Event(eventName.getText().toString(), new Date(), false, false);
 						EditParticipantsActivity.id = dm.saveEvent(event);
 						Log.i("group1", Long.toString(EditParticipantsActivity.id));
 					}
@@ -204,7 +204,7 @@ public class EditParticipantsActivity extends Activity {
 	
 	public void addParticipants(View view) {
 		if(id == -1) { //if the event has never been saved, save it so we have an event id
-			event = new Event(eventName.getText().toString(), new Date(), false);
+			event = new Event(eventName.getText().toString(), new Date(), false, false);
 			id = dm.saveEvent(event);
 		}
 		
@@ -230,7 +230,7 @@ public class EditParticipantsActivity extends Activity {
 				resultIntent.putExtra("event id", -1);
 				setResult(Activity.RESULT_OK, resultIntent);
 			}
-			event = new Event(eventName.getText().toString(), new Date(), false);
+			event = new Event(eventName.getText().toString(), new Date(), false, false);
 		}
 		else {
 			event.setName(eventName.getText().toString());
