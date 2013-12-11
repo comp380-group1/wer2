@@ -49,7 +49,7 @@ public class DataManager extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getReadableDatabase();
 		
 		Cursor cursor = db.query(TABLE_EVENTS,
-				 new String[] {"id", "name", "date", "isReconciled"}, 
+				 new String[] {"id", "name", "date", "isReconciled", "isNotified"}, 
 				 "id=?",
 				 new String[] {Long.toString(id)},
 				 null, null, null);
@@ -130,7 +130,7 @@ public class DataManager extends SQLiteOpenHelper {
 		insertValues.put("name", event.getName());
 		insertValues.put("date", dateToString(event.getDate()));
 		insertValues.put("isReconciled", (event.isReconciled() ? 1 : 0));
-		insertValues.put("isNotified", (event.isReconciled() ? 1: 0));
+		insertValues.put("isNotified", (event.isNotified() ? 1: 0));
 		
 		id = db.insert(TABLE_EVENTS, null, insertValues);		
 		event.setId(id);
@@ -148,6 +148,7 @@ public class DataManager extends SQLiteOpenHelper {
 		updateValues.put("name", event.getName());
 		updateValues.put("date", dateToString(event.getDate()));
 		updateValues.put("isReconciled", (event.isReconciled() ? 1 : 0));
+		updateValues.put("isNotified", (event.isNotified() ? 1 : 0));
 		
 		rowsAffected = db.update(TABLE_EVENTS, updateValues, "id=?", new String[] {Long.toString(event.getId())});
 		
@@ -715,7 +716,8 @@ public class DataManager extends SQLiteOpenHelper {
 			  "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
 			  "name TEXT, " +
 			  "date TEXT, " +
-			  "isReconciled INTEGER)";
+			  "isReconciled INTEGER, " +
+			  "isNotified INTEGER)";
 		db.execSQL(sql);
 		
 		// Build Expense Table
