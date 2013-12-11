@@ -1,4 +1,4 @@
-package editevent;
+package editparticipants;
 
 /**
  * Todo: COMPLETED
@@ -9,14 +9,14 @@ package editevent;
  *
  */
 
-public class EditEventContact {
+public class EditParticipantsContact {
 
 	private String name;
 	private String number;
 	private boolean isAlreadyInEvent;
 	private long id;
 	
-	public EditEventContact(String name, String number, boolean isAlreadyInEvent, long id) {
+	public EditParticipantsContact(String name, String number, boolean isAlreadyInEvent, long id) {
 		
 		this.name = name;
 		this.number = number;

@@ -9,8 +9,8 @@ import main.Expense;
 import main.ExpenseParticipant;
 import main.Participant;
 
-import editevent.EditEventAdapterActivity;
-import editevent.EditEventContact;
+import editparticipants.EditParticipantsAdapterActivity;
+import editparticipants.EditParticipantsContact;
 import wer.main.R;
 import wer.main.R.layout;
 import wer.main.R.menu;
@@ -32,7 +32,7 @@ public class AddFromContactsActivity extends Activity {
 	Button addButton;
 	
 	List<Participant> alreadyInEventParticipants;
-	List<EditEventContact> contacts = new ArrayList<EditEventContact>();
+	List<EditParticipantsContact> contacts = new ArrayList<EditParticipantsContact>();
 	AddContactsAdapterActivity adapter;
 	
 	long id;
@@ -64,7 +64,7 @@ public class AddFromContactsActivity extends Activity {
 		contactsListView.setOnItemClickListener(new OnItemClickListener() {
 		    @Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		    	EditEventContact contact = (EditEventContact)parent.getItemAtPosition(position);
+		    	EditParticipantsContact contact = (EditParticipantsContact)parent.getItemAtPosition(position);
 		    	contact.changeAlreadyInEventToOpposite();
 		    	adapter.update(contacts);
 		    	contactsListView.invalidate();
@@ -89,7 +89,7 @@ public class AddFromContactsActivity extends Activity {
 		while (cursor.moveToNext()) {			
 			String name = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
 			String phoneNumber = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-			EditEventContact temp = null;
+			EditParticipantsContact temp = null;
 			isIn = false;
 			for(int i = 0; i < alreadyInEventParticipants.size(); i++) {
 				//check if the contact is already in the event, if they are, exclude them from the list
@@ -100,7 +100,7 @@ public class AddFromContactsActivity extends Activity {
 				}
 			}
 			if(!isIn) {
-				temp = new EditEventContact(name, phoneNumber, false, -1);
+				temp = new EditParticipantsContact(name, phoneNumber, false, -1);
 				contacts.add(temp);
 			}
 		}
@@ -117,7 +117,7 @@ public class AddFromContactsActivity extends Activity {
 			e.printStackTrace();
 		}
 		for(int i = 0; i < contacts.size(); i++) {
-			EditEventContact contact = contacts.get(i);
+			EditParticipantsContact contact = contacts.get(i);
 			if(contact.isAlreadyInEvent()) { //they are highlighted green, meaning the user wants them in the event
 				Participant person = new Participant(contact.getName(), id, contact.getPhoneNumber());
 				long participantId = dm.saveParticipant(person);

@@ -2,7 +2,7 @@ package contacts;
 
 import java.util.List;
 
-import editevent.EditEventContact;
+import editparticipants.EditParticipantsContact;
 
 import wer.main.R;
 
@@ -24,13 +24,13 @@ import android.widget.TextView;
  *
  */
 
-public class AddContactsAdapterActivity extends ArrayAdapter<EditEventContact> {
+public class AddContactsAdapterActivity extends ArrayAdapter<EditParticipantsContact> {
 
 	private int resource;
 	
-	List<EditEventContact> contacts;
+	List<EditParticipantsContact> contacts;
 	
-	public AddContactsAdapterActivity(Context context, int resource, List<EditEventContact> objects) {
+	public AddContactsAdapterActivity(Context context, int resource, List<EditParticipantsContact> objects) {
 		
 		super(context, resource, objects);
 		this.resource = resource;
@@ -43,7 +43,7 @@ public class AddContactsAdapterActivity extends ArrayAdapter<EditEventContact> {
 		
 		LinearLayout alertView;
 		
-		EditEventContact contact = getItem(position);
+		EditParticipantsContact contact = getItem(position);
 		
 		if(convertView == null) {
 			alertView = new LinearLayout(getContext());
@@ -72,7 +72,7 @@ public class AddContactsAdapterActivity extends ArrayAdapter<EditEventContact> {
 		return alertView;
 	}
 	
-	public void update(List<EditEventContact> contacts) {
+	public void update(List<EditParticipantsContact> contacts) {
 		//this.contacts = contacts;
 		notifyDataSetChanged();
 	}

@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import payments.ViewPaymentsActivity;
-import editevent.EditEventAdapterActivity;
-import editevent.EditEventContact;
 import editexpense.EditExpenseActivity;
+import editparticipants.EditParticipantsAdapterActivity;
+import editparticipants.EditParticipantsContact;
 import main.DataManager;
 import main.Event;
 import main.Expense;

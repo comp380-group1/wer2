@@ -7,7 +7,7 @@ import android.widget.Toast;
 
 public class Notifier {
 	
-	public static void notifyParticipants(List<Payment> payments) {
+	public static void notifyParticipants(Event event, List<Payment> payments) {
 
 		String payerName, payeeName;
 		double amount;
@@ -18,7 +18,7 @@ public class Notifier {
 			
 			try {
 				SmsManager sms = SmsManager.getDefault();
-				sms.sendTextMessage(payments.get(i).getToPhoneNumber(), null, "You owe " + payeeName + " $" + amount + ".", null, null);
+				sms.sendTextMessage(payments.get(i).getToPhoneNumber(), null, "You owe " + payerName + " $" + amount + ", for " + event.getName() + ".", null, null);
 			} catch(Exception e) {
 				e.printStackTrace();
 			}

@@ -6,7 +6,7 @@ import java.util.List;
 
 import java.util.ArrayList;
 
-import editevent.EditEventActivity;
+import editparticipants.EditParticipantsActivity;
 import eventstatus.EventStatusActivity;
 
 import viewevent.EventActivity;
@@ -135,7 +135,7 @@ public class MainActivity extends Activity {
 	        				   4).show();
 	        		break;
 	        	}
-	            Intent edit_intent = new Intent(MainActivity.this, EditEventActivity.class);
+	            Intent edit_intent = new Intent(MainActivity.this, EditParticipantsActivity.class);
 	            edit_intent.putExtra("isForEditing", true);
 	            edit_intent.putExtra("event_id", event.getId());
 	            startActivityForResult(edit_intent, EDIT_EVENT);
@@ -217,7 +217,7 @@ public class MainActivity extends Activity {
 	}
 	
 	public void createNewEvent(View view) {
-		Intent intent = new Intent(MainActivity.this, EditEventActivity.class);
+		Intent intent = new Intent(MainActivity.this, EditParticipantsActivity.class);
 		intent.putExtra("isForEditing", false); //start activity with blank fields
 		startActivityForResult(intent, NEW_EVENT);
 	}

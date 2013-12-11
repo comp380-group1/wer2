@@ -1,4 +1,4 @@
-package editevent;
+package editparticipants;
 
 import java.util.List;
 
@@ -23,13 +23,13 @@ import android.widget.TextView;
  *
  */
 
-public class EditEventAdapterActivity extends ArrayAdapter<EditEventContact> {
+public class EditParticipantsAdapterActivity extends ArrayAdapter<EditParticipantsContact> {
 
 	private int resource;
 	
-	List<EditEventContact> contacts;
+	List<EditParticipantsContact> contacts;
 	
-	public EditEventAdapterActivity(Context context, int resource, List<EditEventContact> objects) {
+	public EditParticipantsAdapterActivity(Context context, int resource, List<EditParticipantsContact> objects) {
 		
 		super(context, resource, objects);
 		this.resource = resource;
@@ -43,7 +43,7 @@ public class EditEventAdapterActivity extends ArrayAdapter<EditEventContact> {
 		LinearLayout alertView;
 		
 		//EditEventContact contact = getItem(position);
-		EditEventContact contact = contacts.get(position);
+		EditParticipantsContact contact = contacts.get(position);
 		
 		if(convertView == null) {
 			alertView = new LinearLayout(getContext());
@@ -72,7 +72,7 @@ public class EditEventAdapterActivity extends ArrayAdapter<EditEventContact> {
 		return alertView;
 	}
 	
-	public void update(List<EditEventContact> contacts) {
+	public void update(List<EditParticipantsContact> contacts) {
 		this.contacts = contacts;
 		notifyDataSetChanged();
 	}

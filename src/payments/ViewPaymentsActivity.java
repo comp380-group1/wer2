@@ -81,7 +81,7 @@ public class ViewPaymentsActivity extends Activity {
 		event.setIsReconciled(true);
 		dm.saveEvent(event);
 		
-		//Notifier.notifyParticipants(payments);
+		Notifier.notifyParticipants(event, payments);
 		
 		Toast.makeText(this.getApplicationContext(), "Sending text(s)", 4).show();
 		sendSMSButton.setEnabled(false);
