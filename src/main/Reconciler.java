@@ -16,7 +16,7 @@ public class Reconciler {
 				if (result == 0 && input.get(i).getCurrentBalance() != 0 && input.get(j).getCurrentBalance() != 0) {
 					
 					//output.add((new Payment(String.valueOf(input.get(j).getId()), String.valueOf(input.get(i).getId()), input.get(j).getCurrentBalance())));
-					output.add((new Payment(input.get(j).getName(), input.get(i).getName(), input.get(j).getCurrentBalance())));
+					output.add((new Payment(input.get(j).getName(), input.get(i).getName(), input.get(j).getCurrentBalance(), input.get(j).getPhoneNumber())));
 					input.get(i).setBalance(0);
 					input.get(j).setBalance(0);
 					break;
@@ -37,7 +37,7 @@ public class Reconciler {
 				if (result < 0 && input.get(i).getCurrentBalance() != 0 && input.get(j).getCurrentBalance() != 0) {
 					
 					//output.add(new Payment(String.valueOf(input.get(j).getId()), String.valueOf(input.get(i).getId()), input.get(j).getCurrentBalance()));
-					output.add(new Payment(input.get(j).getName(), input.get(i).getName(), input.get(j).getCurrentBalance()));
+					output.add(new Payment(input.get(j).getName(), input.get(i).getName(), input.get(j).getCurrentBalance(), input.get(j).getPhoneNumber()));
 					input.get(i).setBalance(result);
 					input.get(j).setBalance(0);
 					simpleReconcile(input, output);
@@ -47,7 +47,7 @@ public class Reconciler {
 				else if (result > 0 && input.get(i).getCurrentBalance() != 0 && input.get(j).getCurrentBalance() != 0) {
 					
 					//output.add(new Payment(String.valueOf(input.get(j).getId()), String.valueOf(input.get(i).getId()), Math.abs(input.get(i).getCurrentBalance())));
-					output.add(new Payment(input.get(j).getName(), input.get(i).getName(), Math.abs(input.get(i).getCurrentBalance())));
+					output.add(new Payment(input.get(j).getName(), input.get(i).getName(), Math.abs(input.get(i).getCurrentBalance()), input.get(i).getPhoneNumber()));
 					input.get(i).setBalance(0);
 					input.get(j).setBalance(result);
 					simpleReconcile(input, output);

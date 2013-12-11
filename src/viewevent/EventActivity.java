@@ -253,7 +253,7 @@ public class EventActivity extends Activity {
 				Reconciler.reconcile(participants, payments);
 				//save payments
 				for(int i = 0; i < payments.size(); i++) {
-					dm.savePayment(new Payment(id, payments.get(i).getTo(), payments.get(i).getFrom(), payments.get(i).getAmount()));
+					dm.savePayment(new Payment(id, payments.get(i).getTo(), payments.get(i).getFrom(), payments.get(i).getAmount(), payments.get(i).getToPhoneNumber()));
 				}
 			}
 			

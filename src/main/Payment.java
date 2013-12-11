@@ -28,10 +28,11 @@ public class Payment implements Comparable<Payment> {
 		this.toPhoneNumber = toPhoneNumber;
 	}
 	
-	public Payment(String to, String from, double amount) {
+	public Payment(String to, String from, double amount, String number) {
 		this.to = to;
 		this.from = from;
 		this.amount = amount;
+		this.toPhoneNumber = number;
 	}
 	
 	public void setId(long id) {
