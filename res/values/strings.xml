@@ -2,21 +2,21 @@
 <resources>
 
     <string name="app_name">We R²</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">We R²</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_view_event">ViewEvent</string>
     <string name="title_section1">Section 1</string>
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
-    <string name="title_activity_event">EventActivity</string>
+    <string name="title_activity_event">Expenses</string>
     <string name="title_activity_view_participant">ViewParticipantActivity</string>
-    <string name="title_activity_edit_expense">EditExpenseActivity</string>
+    <string name="title_activity_edit_expense">Add/Edit Expense</string>
     <string name="title_activity_test_data_manager">TestDataManager</string>
-    <string name="title_activity_edit_event_activity">EditEventActivity2</string>
-    <string name="title_activity_add_from_contacts">AddFromContactsActivity</string>
+    <string name="title_activity_edit_event_activity">Create/Edit Event</string>
+    <string name="title_activity_add_from_contacts">Add Participants</string>
     <string name="title_activity_add_contacts_adapter">AddContactsAdapterActivity</string>
-    <string name="title_activity_view_payments">ViewPaymentsActivity</string>
-    <string name="title_activity_event_status">EventStatusActivity</string>
+    <string name="title_activity_view_payments">Payments</string>
+    <string name="title_activity_event_status">Event Status</string>
     <string name="title_activity_reconciled">ReconciledActivity</string>
 
 </resources>
