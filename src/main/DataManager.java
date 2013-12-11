@@ -58,7 +58,8 @@ public class DataManager extends SQLiteOpenHelper {
 			event = new Event(cursor.getLong(0),
 	  				cursor.getString(1),
 	  				stringToDate(cursor.getString(2)),
-	  				(cursor.getLong(3) == 0 ? false : true));
+	  				(cursor.getLong(3) == 0 ? false : true),
+	  				(cursor.getLong(4) == 0 ? false : true));
 			
 			Log.i(TAG, "Selecting " + event.toString());
 			
@@ -97,7 +98,8 @@ public class DataManager extends SQLiteOpenHelper {
 			Event event = new Event(cursor.getLong(0),
 	  				cursor.getString(1),
 	  				stringToDate(cursor.getString(2)),
-	  				(cursor.getLong(3) == 0 ? false : true));
+	  				(cursor.getLong(3) == 0 ? false : true),
+	  				(cursor.getLong(4) == 0 ? false : true));
 			
 			Log.i(TAG, "Selecting " + event.toString());	
 			
@@ -127,7 +129,8 @@ public class DataManager extends SQLiteOpenHelper {
 		
 		insertValues.put("name", event.getName());
 		insertValues.put("date", dateToString(event.getDate()));
-		insertValues.put("isReconciled", (event.getIsReconciled() ? 1 : 0));
+		insertValues.put("isReconciled", (event.isReconciled() ? 1 : 0));
+		insertValues.put("isNotified", (event.isReconciled() ? 1: 0));
 		
 		id = db.insert(TABLE_EVENTS, null, insertValues);		
 		event.setId(id);
@@ -144,7 +147,7 @@ public class DataManager extends SQLiteOpenHelper {
 		ContentValues updateValues = new ContentValues();
 		updateValues.put("name", event.getName());
 		updateValues.put("date", dateToString(event.getDate()));
-		updateValues.put("isReconciled", (event.getIsReconciled() ? 1 : 0));
+		updateValues.put("isReconciled", (event.isReconciled() ? 1 : 0));
 		
 		rowsAffected = db.update(TABLE_EVENTS, updateValues, "id=?", new String[] {Long.toString(event.getId())});
 		

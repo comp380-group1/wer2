@@ -10,31 +10,24 @@ public class Event {
 	private String name;
 	private Date date = null;
 	private boolean isReconciled;
+	private boolean isNotified;
 	private List<Expense> expenses = new ArrayList<Expense>();
 	private List<Participant> participants = new ArrayList<Participant>();
 	private List<Payment> payments;	
 
-	public Event(long id, String name, Date date, boolean isReconciled) {
+	public Event(long id, String name, Date date, boolean isReconciled, boolean isNotified) {
 		this.id = id;
 		this.name = name;
 		this.date = date;
 		this.isReconciled = isReconciled;
+		this.isNotified = isNotified;
 	}
 	
-	public Event(String name, Date date, boolean isReconciled) {
+	public Event(String name, Date date, boolean isReconciled, boolean isNotified) {
 		this.name = name;
 		this.date = date;
 		this.isReconciled = isReconciled;
-	}
-	
-	public Event(String name, boolean isReconciled) {
-		this.name = name;
-		this.isReconciled = isReconciled;
-	}
-	
-	public Event(String name) {
-		this.name = name;
-		isReconciled = false;
+		this.isNotified = isNotified;
 	}
 	
 	public void addParticipant(Participant newParticipant) { 
@@ -93,8 +86,9 @@ public class Event {
 	public long getId() {	return id;	}
 	public String getName() { return name; }
 	public Date getDate() { return date; }
-	public boolean getIsReconciled() {	return isReconciled;	}
-	public boolean isReconciled() {	return isReconciled;	}
+	//public boolean getIsReconciled() {	return isReconciled;	}
+	public boolean isReconciled() {	return isReconciled; }
+	public boolean isNotified() { return isNotified; }
 	public String getEventName() { return name; }
 	public List getAllPayments() { return payments;	}
 	public List getAllParticipants() { return participants; }
@@ -150,7 +144,7 @@ public class Event {
 	}
 
 	public String toString() {
-		return "Event (id=" + getId() + ",name=" + getName() + ",date=" + getDate() + ",isReconciled=" + getIsReconciled() + ")";
+		return "Event (id=" + getId() + ",name=" + getName() + ",date=" + getDate() + ",isReconciled=" + isReconciled() + ")";
 	}	
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
