@@ -9,7 +9,7 @@ package editparticipants;
  *
  */
 
-public class EditParticipantsContact {
+public class EditParticipantsContact implements Comparable<EditParticipantsContact>{
 
 	private String name;
 	private String number;
@@ -39,6 +39,11 @@ public class EditParticipantsContact {
 			isAlreadyInEvent = false;
 		else
 			isAlreadyInEvent = true;
+	}
+
+	@Override
+	public int compareTo(EditParticipantsContact arg) {
+		return this.name.compareTo(arg.getName());
 	}
 	
 	

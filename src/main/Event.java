@@ -57,6 +57,10 @@ public class Event {
 		this.date = date;
 	}
 	
+	public void setIsNotified(boolean isNotified) {
+		this.isNotified = isNotified;
+	}
+	
 	public void setIsReconciled(boolean isReconciled) {
 		this.isReconciled = isReconciled;
 	}

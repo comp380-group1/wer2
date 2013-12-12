@@ -1,6 +1,7 @@
 package contacts;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import main.DataManager;
@@ -105,8 +106,18 @@ public class AddFromContactsActivity extends Activity {
 			}
 		}
 		
+		alphabetizeContactsList();
+		
 		adapter = new AddContactsAdapterActivity(this, R.layout.editevent_list_view_components, contacts);
 		contactsListView.setAdapter(adapter);
+	}
+	
+	private void alphabetizeContactsList() {
+		if(contacts == null) {
+			return;
+		}
+		
+		Collections.sort(contacts);
 	}
 	
 	public void addContacts(View view) {

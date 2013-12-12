@@ -142,6 +142,8 @@ public class EditParticipantsActivity extends Activity {
 
 		alertDialogBuilder.setView(promptsView);
 
+		final Participant participant = dm.getParticipant(contact.getId());
+		
 		final EditText customName = (EditText) promptsView
 				.findViewById(R.id.customname);
 		final EditText customNumber = (EditText) promptsView
@@ -173,8 +175,11 @@ public class EditParticipantsActivity extends Activity {
 		    		}
 		    		
 			    	if(isEdit) {
-			    		person = new Participant(contact.getId(), EditParticipantsActivity.id, customName.getText().toString(), customNumber.getText().toString(), 0.0);
-			    		dm.saveParticipant(person);
+			    		//person = new Participant(contact.getId(), EditParticipantsActivity.id, customName.getText().toString(), customNumber.getText().toString(), 0.0);
+			    		participant.addPhoneNumber(customNumber.getText().toString());
+			    		participant.setName(customName.getText().toString());
+			    		dm.saveParticipant(participant);
+			    		changeParticipantToContact(participant);
 			    	}
 			    	else {
 			    		person = new Participant(customName.getText().toString(), EditParticipantsActivity.id, customNumber.getText().toString());
@@ -184,8 +189,8 @@ public class EditParticipantsActivity extends Activity {
 								dm.saveExpenseParticipant(new ExpenseParticipant(id, expenses.get(i).getId(), participantId, 0.0, 0.0, false));
 							}
 						}
+			    		changeParticipantToContact(person);
 			    	}
-			    	changeParticipantToContact(person);
 			    	adapter = new EditParticipantsAdapterActivity(EditParticipantsActivity.this, R.layout.editevent_list_view_components, listViewContacts);
 					participantsList.setAdapter(adapter);
 					refreshListView();

@@ -1,5 +1,6 @@
 package payments;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,8 +48,8 @@ public class ViewPaymentsActivity extends Activity {
 		Intent intent = getIntent();
 		id = intent.getLongExtra("event_id", -1);
 		event = dm.getEvent(id);
-		boolean disableSMSButton = intent.getBooleanExtra("disableSMSButton", true);
-		if(disableSMSButton) {
+		
+		if(event.isNotified()) {
 			sendSMSButton.setEnabled(false);
 		}
 		else {
@@ -62,8 +63,9 @@ public class ViewPaymentsActivity extends Activity {
 		}
 		
 		List<String> paymentsAsStrings = new ArrayList<String>();
+		DecimalFormat f = new DecimalFormat("##.00");
 		for(int i = 0; i < payments.size(); i++) {
-			paymentsAsStrings.add(new String(payments.get(i).getTo() + " owes " + payments.get(i).getFrom() + " $" + payments.get(i).getAmount()));
+			paymentsAsStrings.add(new String(payments.get(i).getTo() + " owes " + payments.get(i).getFrom() + " $" + f.format(payments.get(i).getAmount())));
 		}
 		
 		adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, paymentsAsStrings);
@@ -78,7 +80,7 @@ public class ViewPaymentsActivity extends Activity {
 	}
 	
 	public void sendSMS(View view) {
-		event.setIsReconciled(true);
+		event.setIsNotified(true);
 		dm.saveEvent(event);
 		
 		Notifier.notifyParticipants(event, payments);

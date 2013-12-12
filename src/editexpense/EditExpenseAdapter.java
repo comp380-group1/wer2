@@ -64,7 +64,12 @@ private int resource;
 		DecimalFormat f = new DecimalFormat("##.00");
 		
 		participantName.setText(expenseParticipant.getParticipant().getName());
-		amountPaid.setText("" + f.format(expenseParticipant.getPaid()));
+		if(expenseParticipant.getPaid() == 0) {
+			amountPaid.setText("0");
+		}
+		else {
+			amountPaid.setText("" + f.format(expenseParticipant.getPaid()));
+		}
 		if(expenseParticipant.isParticipating()) {
 			inOrOutBox.setChecked(true);
 		}
@@ -82,14 +87,20 @@ private int resource;
 				   expenseParticipant.setAmount(Double.parseDouble(amountPaid.getText().toString()));
 				   expenseParticipant.setParticipating(true);
 				   if(Double.parseDouble(amountPaid.getText().toString()) < 0) {
-					   Toast.makeText(getContext(), "Not valid input - resetting field", 4).show();
-					   amountPaid.setText(Double.toString(0.0));
+					   //Toast.makeText(getContext(), "Not valid input - resetting field", 4).show();
+					   amountPaid.setText("0");
 				   }
 			   } catch(Exception e) {
-				   Toast.makeText(getContext(), "Not valid input - resetting field", 4).show();
-				   amountPaid.setText(Double.toString(0.0));
+				   //Toast.makeText(getContext(), "Not valid input - resetting field", 4).show();
+				   amountPaid.setText("0");
 				   expenseParticipant.setAmount(0.0);
 			   }
+			  }
+			  else {
+				  double value = Double.parseDouble(amountPaid.getText().toString());
+				  if(value == 0) {
+					  amountPaid.setText("");
+				  }
 			  }
 			}
 		});

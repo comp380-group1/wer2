@@ -52,9 +52,13 @@ public class EventStatusAdapter extends ArrayAdapter<Participant> {
 		DecimalFormat f = new DecimalFormat("##.00");
 		
 		participantName.setText(participant.getName());
-		participantAmount.setText("$ " + f.format(participant.getCurrentBalance()));
 		participantNumber.setText(participant.getPhoneNumber());
-		
+		if(participant.getCurrentBalance() == 0) {
+			participantAmount.setText("$ 0.00");
+		}
+		else {
+			participantAmount.setText("$ " + f.format(participant.getCurrentBalance()));
+		}
 		return alertView;
 		
 	}

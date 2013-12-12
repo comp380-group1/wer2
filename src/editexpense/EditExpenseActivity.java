@@ -1,5 +1,6 @@
 package editexpense;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -59,9 +60,7 @@ public class EditExpenseActivity extends Activity {
 		Intent intent = getIntent();
 		expense_id = intent.getLongExtra("expense_id", -1);
 		event_id = intent.getLongExtra("event_id", -1);
-		Log.i("group1", "herrrrrrrrrrr:  "+event_id);
 		event = dm.getEvent(event_id);
-		Log.i("group1", "herrrrrrrrrrr:  "+event_id);
 		try {
 			eventParticipantsList = dm.getParticipantsByEventId(event_id);
 		} catch (Exception e) {
@@ -72,7 +71,7 @@ public class EditExpenseActivity extends Activity {
 			addExpenseButton.setText("Add Expense");
 			expense = new Expense(event_id, "", new Date(), 0.0);
 			expense_id = dm.saveExpense(expense);
-			expenseTotal.setText(Double.toString(expense.getAmount()));
+			expenseTotal.setText("$ 0.00");
 			turnParticipantsIntoExpenseparticipants();
 		}
 		else {
@@ -85,8 +84,8 @@ public class EditExpenseActivity extends Activity {
 				e.printStackTrace();
 			}
 			expenseName.setText(expense.getName());
-			//expenseName.setKeyListener(null); //we dont want them editing this if they aren't in edit mode
-			expenseTotal.setText("$ " + Double.toString(expense.getAmount()));
+			DecimalFormat f = new DecimalFormat("##.00");
+			expenseTotal.setText("$ " + f.format(expense.getAmount()));
 		}
 		
 		setExpenseParticipantsParticipant();

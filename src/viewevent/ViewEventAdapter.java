@@ -1,5 +1,6 @@
 package viewevent;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import wer.main.R;
@@ -53,9 +54,18 @@ public class ViewEventAdapter extends ArrayAdapter<Expense> {
 		TextView expenseDate = (TextView)alertView.findViewById(R.id.expensedate);
 		TextView expenseAmount = (TextView)alertView.findViewById(R.id.expenseamount);
 		
+		DecimalFormat f = new DecimalFormat("##.00");
+		
 		expenseName.setText(expense.getName());
-		expenseDate.setText(DataManager.dateToString(expense.getDate()));
-		expenseAmount.setText("$ " + Double.toString(expense.getAmount()));
+		
+		String[] date = expense.getDate().toString().split("\\s+");
+		expenseDate.setText(date[0] + " " + date[1] + " " + date[2] + " " + date[5]);
+		if(expense.getAmount() == 0) {
+			expenseAmount.setText("$ 0.00");
+		}
+		else {
+			expenseAmount.setText("$ " + f.format(expense.getAmount()));
+		}
 		
 		return alertView;
 		

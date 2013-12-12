@@ -236,7 +236,6 @@ public class EventActivity extends Activity {
 		if(event.isReconciled()) {
 			Intent intent = new Intent(EventActivity.this, ViewPaymentsActivity.class);
 			intent.putExtra("event_id", id);
-			intent.putExtra("disableSMSButton", true);
 			startActivity(intent);
 		}
 		else {
@@ -256,6 +255,9 @@ public class EventActivity extends Activity {
 					dm.savePayment(new Payment(id, payments.get(i).getTo(), payments.get(i).getFrom(), payments.get(i).getAmount(), payments.get(i).getToPhoneNumber()));
 				}
 			}
+			
+			event.setIsReconciled(true);
+			dm.saveEvent(event);
 			
 			Intent intent = new Intent(EventActivity.this, ViewPaymentsActivity.class);
 			intent.putExtra("event_id", id);

@@ -37,6 +37,10 @@ public class Participant implements Comparable<Participant> {
 		this.id = id;		
 	}
 	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 	public void setEventId(long eventId) {
 		this.eventId = eventId;		
 	}
