@@ -141,8 +141,6 @@ public class EditParticipantsActivity extends Activity {
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 
 		alertDialogBuilder.setView(promptsView);
-
-		final Participant participant = dm.getParticipant(contact.getId());
 		
 		final EditText customName = (EditText) promptsView
 				.findViewById(R.id.customname);
@@ -175,6 +173,7 @@ public class EditParticipantsActivity extends Activity {
 		    		}
 		    		
 			    	if(isEdit) {
+			    		final Participant participant = dm.getParticipant(contact.getId());
 			    		//person = new Participant(contact.getId(), EditParticipantsActivity.id, customName.getText().toString(), customNumber.getText().toString(), 0.0);
 			    		participant.addPhoneNumber(customNumber.getText().toString());
 			    		participant.setName(customName.getText().toString());
