@@ -1,5 +1,6 @@
 package main;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import android.telephony.SmsManager;
@@ -11,6 +12,7 @@ public class Notifier {
 
 		String payerName, payeeName;
 		double amount;
+		DecimalFormat f = new DecimalFormat("##.00");
 		for(int i = 0; i < payments.size(); i++) {
 			payerName = payments.get(i).getFrom();
 			payeeName = payments.get(i).getTo();
@@ -18,7 +20,7 @@ public class Notifier {
 			
 			try {
 				SmsManager sms = SmsManager.getDefault();
-				sms.sendTextMessage(payments.get(i).getToPhoneNumber(), null, "You owe " + payerName + " $" + amount + ", for " + event.getName() + ".", null, null);
+				sms.sendTextMessage(payments.get(i).getToPhoneNumber(), null, "You owe " + payerName + " $" + f.format(amount) + ", for " + event.getName() + ".", null, null);
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
