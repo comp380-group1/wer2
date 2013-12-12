@@ -377,6 +377,16 @@ public class EditParticipantsActivity extends Activity {
 	}
 	
 	@Override
+	public void onBackPressed(){
+		Log.i("Group 1", "Back button pressed");
+		if(!hasBeenFinished) {
+			dm.deleteEvent(id);
+		}
+		dm.close();
+	    finish();
+	}
+	
+	@Override
 	public void onDestroy() {
 		super.onDestroy();
 		if(!hasBeenFinished) {
