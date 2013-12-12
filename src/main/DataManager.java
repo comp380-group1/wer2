@@ -23,7 +23,7 @@ public class DataManager extends SQLiteOpenHelper {
 	private final static String TABLE_EXPENSE_PARTICIPANTS="ExpenseParticipants";
 	private final static String TABLE_PAYMENTS = "Payments";
 	
-	public static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd",Locale.US);
+	public static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd",Locale.US);
 	
 	public DataManager(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
