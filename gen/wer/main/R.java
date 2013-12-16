@@ -26,9 +26,9 @@ public final class R {
     public static final class id {
         public static final int View01=0x7f08000f;
         public static final int View02=0x7f080011;
-        public static final int action_settings=0x7f080029;
+        public static final int action_settings=0x7f080028;
         public static final int addcontacts=0x7f080001;
-        public static final int addexpense=0x7f080024;
+        public static final int addexpense=0x7f080023;
         public static final int amount=0x7f08001b;
         public static final int amountpaid=0x7f080017;
         public static final int btnLL=0x7f080008;
@@ -39,8 +39,8 @@ public final class R {
         public static final int eventname=0x7f08000e;
         public static final int eventstatuslistview=0x7f08001d;
         public static final int expenseamount=0x7f080020;
-        public static final int expensedate=0x7f080022;
-        public static final int expenselist=0x7f080023;
+        public static final int expensedate=0x7f080021;
+        public static final int expenselist=0x7f080022;
         public static final int expensename=0x7f080013;
         public static final int expenseparticipantname=0x7f080015;
         public static final int expenseparticipantslist=0x7f08001a;
@@ -51,21 +51,20 @@ public final class R {
         public static final int inorout=0x7f080016;
         public static final int inoroutbox=0x7f080010;
         public static final int layout_root=0x7f080003;
-        public static final int lstText=0x7f080027;
+        public static final int lstText=0x7f080026;
         public static final int manycontacts=0x7f08000b;
         public static final int name=0x7f080006;
-        public static final int newevent=0x7f080028;
+        public static final int newevent=0x7f080027;
         public static final int number=0x7f08001c;
         public static final int onecontact=0x7f08000a;
         public static final int participantamount=0x7f080012;
-        public static final int participants=0x7f080026;
+        public static final int participants=0x7f080025;
         public static final int participantslist=0x7f08000d;
         public static final int paymentslist=0x7f08001e;
         public static final int phonenumber=0x7f080007;
         public static final int smsbutton=0x7f08001f;
-        public static final int textView2=0x7f080021;
         public static final int twobuttonLL=0x7f080009;
-        public static final int viewpayments=0x7f080025;
+        public static final int viewpayments=0x7f080024;
     }
     public static final class layout {
         public static final int contacts_main=0x7f030000;
