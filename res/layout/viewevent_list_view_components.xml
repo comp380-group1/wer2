@@ -14,7 +14,6 @@
         android:id="@+id/expenseamount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/textView2"
         android:layout_alignParentRight="true"
         android:text="TextView" 
         android:textAppearance="?android:attr/textAppearanceLarge" />
