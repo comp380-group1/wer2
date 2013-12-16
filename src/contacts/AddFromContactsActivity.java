@@ -12,9 +12,9 @@ import main.Participant;
 
 import editparticipants.EditParticipantsAdapterActivity;
 import editparticipants.EditParticipantsContact;
-import wer.main.R;
-import wer.main.R.layout;
-import wer.main.R.menu;
+import wer2.main.R;
+import wer2.main.R.layout;
+import wer2.main.R.menu;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.app.Activity;

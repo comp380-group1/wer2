@@ -12,7 +12,7 @@ import main.Expense;
 import main.ExpenseParticipant;
 import main.Participant;
 
-import wer.main.R;
+import wer2.main.R;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;

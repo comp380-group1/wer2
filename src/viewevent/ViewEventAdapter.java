@@ -3,7 +3,7 @@ package viewevent;
 import java.text.DecimalFormat;
 import java.util.List;
 
-import wer.main.R;
+import wer2.main.R;
 import main.DataManager;
 import main.Event;
 import main.Expense;

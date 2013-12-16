@@ -8,7 +8,7 @@ import contacts.AddFromContactsActivity;
 
 import viewevent.EventActivity;
 import viewevents.MainActivity;
-import wer.main.R;
+import wer2.main.R;
 
 import main.DataManager;
 import main.Event;

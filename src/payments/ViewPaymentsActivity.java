@@ -9,9 +9,9 @@ import main.Event;
 import main.Notifier;
 import main.Payment;
 
-import wer.main.R;
-import wer.main.R.layout;
-import wer.main.R.menu;
+import wer2.main.R;
+import wer2.main.R.layout;
+import wer2.main.R.menu;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;

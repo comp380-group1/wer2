@@ -2,7 +2,7 @@ package editparticipants;
 
 import java.util.List;
 
-import wer.main.R;
+import wer2.main.R;
 
 import android.content.Context;
 import android.graphics.Color;

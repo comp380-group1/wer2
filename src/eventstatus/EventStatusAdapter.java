@@ -3,7 +3,7 @@ package eventstatus;
 import java.text.DecimalFormat;
 import java.util.List;
 
-import wer.main.R;
+import wer2.main.R;
 
 import main.ExpenseParticipant;
 import main.Participant;
