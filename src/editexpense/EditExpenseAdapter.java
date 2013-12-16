@@ -61,17 +61,10 @@ private int resource;
 		
 		amountPaid.setRawInputType(Configuration.KEYBOARD_12KEY);
 		
-		DecimalFormat f = new DecimalFormat("##.00");
+		DecimalFormat f = new DecimalFormat("##.##");
 		
 		participantName.setText(expenseParticipant.getParticipant().getName());
-
-		amountPaid.setText("" + f.format(expenseParticipant.getPaid()));
-		//if(expenseParticipant.getPaid() == 0) {
-		//	amountPaid.setText("0");
-		//}
-		//else {
-		//	amountPaid.setText("" + f.format(expenseParticipant.getPaid()));
-		//}
+		amountPaid.setText(f.format(expenseParticipant.getPaid()).toString());
 
 		if(expenseParticipant.isParticipating()) {
 			inOrOutBox.setChecked(true);
@@ -90,26 +83,14 @@ private int resource;
 						expenseParticipant.setAmount(Double.parseDouble(amountPaid.getText().toString()));
 						expenseParticipant.setParticipating(true);
 						if(Double.parseDouble(amountPaid.getText().toString()) < 0) {
-							//Toast.makeText(getContext(), "Not valid input - resetting field", 4).show();
-
-							amountPaid.setText(Double.toString(0.0));
-							//amountPaid.setText("0");
+							amountPaid.setText(Double.toString(0));
+							expenseParticipant.setAmount(0);
 						}
 					} catch(Exception e) {
-						//Toast.makeText(getContext(), "Not valid input - resetting field", 4).show();
-
-						amountPaid.setText(Double.toString(0.0));
-						//amountPaid.setText("0");
-
-						expenseParticipant.setAmount(0.0);
+						amountPaid.setText(Double.toString(0));
+						expenseParticipant.setAmount(0);
 					}
 				}
-				//else {
-				//	double value = Double.parseDouble(amountPaid.getText().toString());
-				//	if(value == 0) {
-				//		amountPaid.setText("");
-				//	}
-				//}
 			}
 		});
 		
@@ -121,16 +102,14 @@ private int resource;
 		    	}
 		    	else {
 		    		expenseParticipant.setParticipating(false);
-		    		expenseParticipant.setAmount(0.0);
-		    		amountPaid.setText(Double.toString(0.0));
+		    		expenseParticipant.setAmount(0);
+		    		amountPaid.setText(Double.toString(0));
 		    		Log.i("group1", ""+expenseParticipant.getAllottedAmount());
 		    	}
 		    }
 		});
-		
-		
+
 		return alertView;
-		
+
 	}
-	
 }
