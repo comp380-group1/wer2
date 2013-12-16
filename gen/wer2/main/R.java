@@ -5,7 +5,7 @@
  * should not be modified by hand.
  */
 
-package wer.main;
+package wer2.main;
 
 public final class R {
     public static final class attr {

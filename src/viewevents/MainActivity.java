@@ -10,7 +10,7 @@ import editparticipants.EditParticipantsActivity;
 import eventstatus.EventStatusActivity;
 
 import viewevent.EventActivity;
-import wer.main.R;
+import wer2.main.R;
 
 import main.DataManager;
 import main.Event;

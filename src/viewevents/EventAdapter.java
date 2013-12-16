@@ -2,7 +2,7 @@ package viewevents;
 
 import java.util.List;
 
-import wer.main.R;
+import wer2.main.R;
 
 import main.Event;
 

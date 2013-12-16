@@ -6,7 +6,7 @@ import java.util.List;
 import main.DataManager;
 import main.Expense;
 import main.ExpenseParticipant;
-import wer.main.R;
+import wer2.main.R;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.util.Log;

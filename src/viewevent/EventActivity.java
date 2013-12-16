@@ -15,7 +15,7 @@ import main.Participant;
 import main.Payment;
 import main.Reconciler;
 import viewevents.MainActivity;
-import wer.main.R;
+import wer2.main.R;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
