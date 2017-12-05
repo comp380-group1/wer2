@@ -1,4 +1,10 @@
-wer2
+We R²
 ====
 
-AHHHHHHHHH, WHAT IS THIS???????????
+We R² helps users track expenses for any given event and calculates any debt between the participants to make everybody square.
+
+If you have ever been on a trip with friends, you know how frustrating and time consuming it could be to calculate how much each person owes after everyone has chipped in to pay for something involved on the getaway. For example, a group of friends decide to take a trip to Big Bear. Someone pays for the cabin with their credit card. Another person is in charge of bringing drinks. Someone else buys all the food supplies, etc. At the end of trip, everyone needs to account for what they paid, sum up all the expenses, then try to redistribute the money evenly among everyone. Usually, this takes tedious calculations and there ends up being a lot of unnecessary exchange of money between people: Person A will give Person B $20, then Person B will give person C $30 whereas this could have been avoided by just having Person A give the money directly to Person C, and so on.
+
+We R² is an application intended to take the fuss out of this monetary ordeal. By having one person use their phone to notate what everyone purchased, the application evenly distributes the expenses among everyone with the least amount of extra cash exchanges between participants. The name of the application “We R²” which comes from the colloquial phrase “We’re square,” is used when two people have called it even in a situation involving money.
+
+The categories that will be available are “Events,” “Participants,” and “Expenses.” Events are the different trips or occasions that the user wants to record. Participants will be the names of all those who are being taken into consideration as responsible attendees of the event expenses. Expenses are all costs during the event. The application allows the user to enter the expenses, and which participant took care of the expense. The major function of the app is to calculate how much each participant will pay another participant, until all expenses are evenly distributed. An add-on feature will allow the user to send the final total for each user via text message, so everyone sees their own tally and who they need to pay.
